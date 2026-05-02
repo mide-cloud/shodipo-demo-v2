@@ -6,48 +6,87 @@
 <title>Shodipo Treasury Platform</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#fff;display:flex;height:100vh;overflow:hidden}
-.sidebar{width:260px;background:#000;border-right:1px solid #222;display:flex;flex-direction:column;flex-shrink:0}
-.logo{padding:24px;border-bottom:1px solid #222;display:flex;align-items:center;gap:12px}
-.logo-icon{width:36px;height:36px;background:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#000;font-size:20px}
+
+:root {
+--bg-primary: #0a0a0a;
+--bg-secondary: #000;
+--bg-tertiary: #0f0f0f;
+--bg-card: #0f0f0f;
+--bg-hover: #1a1a1a;
+--border-primary: #222;
+--border-secondary: #333;
+--border-tertiary: #444;
+--text-primary: #fff;
+--text-secondary: #999;
+--text-tertiary: #666;
+--accent-green: #4ade80;
+--accent-yellow: #facc15;
+--accent-orange: #fb923c;
+--accent-red: #f87171;
+--accent-blue: #60a5fa;
+}
+
+[data-theme="light"] {
+--bg-primary: #ffffff;
+--bg-secondary: #f8f9fa;
+--bg-tertiary: #f1f3f5;
+--bg-card: #ffffff;
+--bg-hover: #f8f9fa;
+--border-primary: #e9ecef;
+--border-secondary: #dee2e6;
+--border-tertiary: #ced4da;
+--text-primary: #212529;
+--text-secondary: #6c757d;
+--text-tertiary: #adb5bd;
+--accent-green: #2d9f5a;
+--accent-yellow: #e6b800;
+--accent-orange: #e67700;
+--accent-red: #dc3545;
+--accent-blue: #0d6efd;
+}
+
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg-primary);color:var(--text-primary);display:flex;height:100vh;overflow:hidden;transition:background 0.3s,color 0.3s}
+.sidebar{width:260px;background:var(--bg-secondary);border-right:1px solid var(--border-primary);display:flex;flex-direction:column;flex-shrink:0}
+.logo{padding:24px;border-bottom:1px solid var(--border-primary);display:flex;align-items:center;gap:12px}
+.logo-icon{width:36px;height:36px;background:var(--text-primary);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--bg-primary);font-size:20px}
 .logo-text{font-size:18px;font-weight:600}
 .nav{flex:1;overflow-y:auto;padding:16px 0}
 .nav-section{margin-bottom:24px}
-.nav-label{padding:8px 20px;font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:0.5px}
+.nav-label{padding:8px 20px;font-size:11px;font-weight:600;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.5px}
 .nav-item{padding:10px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:all 0.2s}
-.nav-item:hover{background:#1a1a1a}
-.nav-item.active{background:#1a1a1a;border-left:3px solid #fff}
-.nav-badge{background:#333;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.nav-item:hover{background:var(--bg-hover)}
+.nav-item.active{background:var(--bg-hover);border-left:3px solid var(--text-primary)}
+.nav-badge{background:var(--border-secondary);color:var(--text-primary);padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.header{padding:20px 32px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
+.header{padding:20px 32px;border-bottom:1px solid var(--border-primary);display:flex;justify-content:space-between;align-items:center}
 .header-left h1{font-size:24px;margin-bottom:4px}
-.header-left p{font-size:14px;color:#999}
+.header-left p{font-size:14px;color:var(--text-secondary)}
 .header-right{display:flex;gap:12px;align-items:center}
-.entity-selector{padding:8px 16px;background:#1a1a1a;border:1px solid #333;border-radius:6px;color:#fff;cursor:pointer;font-size:14px;transition:all 0.2s}
-.entity-selector:hover{border-color:#555}
-.export-btn{padding:8px 20px;background:#fff;color:#000;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.2s}
-.export-btn:hover{background:#f0f0f0}
+.entity-selector{padding:8px 16px;background:var(--bg-hover);border:1px solid var(--border-secondary);border-radius:6px;color:var(--text-primary);cursor:pointer;font-size:14px;transition:all 0.2s}
+.entity-selector:hover{border-color:var(--border-tertiary)}
+.export-btn{padding:8px 20px;background:var(--text-primary);color:var(--bg-primary);border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.2s}
+.export-btn:hover{opacity:0.9}
 .content{flex:1;overflow-y:auto;padding:32px}
-.banner{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%);border:1px solid #333;border-radius:12px;padding:24px;margin-bottom:32px}
+.banner{background:linear-gradient(135deg,var(--bg-hover) 0%,var(--bg-primary) 100%);border:1px solid var(--border-secondary);border-radius:12px;padding:24px;margin-bottom:32px}
 .banner-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .banner-icon{font-size:32px}
 .banner-title{font-size:20px;font-weight:600}
 .banner-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:16px}
 .banner-stat{display:flex;flex-direction:column}
 .banner-stat-value{font-size:24px;font-weight:700;margin-bottom:4px}
-.banner-stat-label{font-size:13px;color:#999}
+.banner-stat-label{font-size:13px;color:var(--text-secondary)}
 .banner-actions{display:flex;gap:12px;margin-top:20px}
 .btn{padding:10px 20px;border-radius:6px;border:none;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.2s}
-.btn-primary{background:#fff;color:#000}
-.btn-primary:hover{background:#f0f0f0;transform:translateY(-1px)}
-.btn-secondary{background:transparent;color:#fff;border:1px solid #444}
-.btn-secondary:hover{border-color:#666;background:#1a1a1a}
+.btn-primary{background:var(--text-primary);color:var(--bg-primary)}
+.btn-primary:hover{opacity:0.9;transform:translateY(-1px)}
+.btn-secondary{background:transparent;color:var(--text-primary);border:1px solid var(--border-tertiary)}
+.btn-secondary:hover{border-color:var(--text-tertiary);background:var(--bg-hover)}
 .btn-small{padding:6px 16px;font-size:12px}
 .section{margin-bottom:32px}
 .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .section-title{font-size:18px;font-weight:600}
-.section-subtitle{font-size:14px;color:#999;margin-top:4px}
-.card{background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:24px}
+.section-subtitle{font-size:14px;color:var(--text-secondary);margin-top:4px}
+.card{background:var(--bg-card);border:1px solid var(--border-primary);border-radius:12px;padding:24px}
 .grid{display:grid;gap:20px}
 .grid-2{grid-template-columns:repeat(2,1fr)}
 .grid-3{grid-template-columns:repeat(3,1fr)}
@@ -60,118 +99,118 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .aging-card.orange{background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.3)}
 .aging-card.red{background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.3)}
 .aging-number{font-size:48px;font-weight:700;margin-bottom:8px}
-.aging-label{font-size:14px;color:#999;margin-bottom:4px}
-.aging-days{font-size:12px;color:#666;font-weight:600}
+.aging-label{font-size:14px;color:var(--text-secondary);margin-bottom:4px}
+.aging-days{font-size:12px;color:var(--text-tertiary);font-weight:600}
 table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:12px;border-bottom:1px solid #222;font-size:13px;color:#999;font-weight:600;cursor:pointer;user-select:none;position:relative}
-th:hover{color:#fff;background:#1a1a1a}
+th{text-align:left;padding:12px;border-bottom:1px solid var(--border-primary);font-size:13px;color:var(--text-secondary);font-weight:600;cursor:pointer;user-select:none;position:relative}
+th:hover{color:var(--text-primary);background:var(--bg-hover)}
 th.sortable::after{content:'⇅';margin-left:6px;opacity:0.3}
 th.sort-asc::after{content:'↑';opacity:1}
 th.sort-desc::after{content:'↓';opacity:1}
-td{padding:14px 12px;border-bottom:1px solid #1a1a1a;font-size:14px}
-tr:hover{background:#0f0f0f}
+td{padding:14px 12px;border-bottom:1px solid var(--border-primary);font-size:14px}
+tr:hover{background:var(--bg-tertiary)}
 .status-badge{padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;display:inline-block}
-.status-matched{background:rgba(74,222,128,0.2);color:#4ade80}
-.status-variance{background:rgba(251,146,60,0.2);color:#fb923c}
-.status-missing{background:rgba(248,113,113,0.2);color:#f87171}
-.status-auto{background:rgba(96,165,250,0.2);color:#60a5fa}
-.status-review{background:rgba(250,204,21,0.2);color:#facc15}
-.confidence-high{color:#4ade80;font-weight:600}
-.confidence-medium{color:#facc15;font-weight:600}
-.confidence-low{color:#fb923c;font-weight:600}
-.fx-widget{background:#0f0f0f;border:1px solid #222;border-radius:8px;padding:16px}
-.fx-pair{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1a1a1a}
+.status-matched{background:rgba(74,222,128,0.2);color:var(--accent-green)}
+.status-variance{background:rgba(251,146,60,0.2);color:var(--accent-orange)}
+.status-missing{background:rgba(248,113,113,0.2);color:var(--accent-red)}
+.status-auto{background:rgba(96,165,250,0.2);color:var(--accent-blue)}
+.status-review{background:rgba(250,204,21,0.2);color:var(--accent-yellow)}
+.confidence-high{color:var(--accent-green);font-weight:600}
+.confidence-medium{color:var(--accent-yellow);font-weight:600}
+.confidence-low{color:var(--accent-orange);font-weight:600}
+.fx-widget{background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:8px;padding:16px}
+.fx-pair{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border-primary)}
 .fx-pair:last-child{border:none}
 .fx-rate{font-weight:600;font-size:16px}
 .fx-change{font-size:12px;margin-left:8px}
-.fx-change.up{color:#4ade80}
-.fx-change.down{color:#f87171}
+.fx-change.up{color:var(--accent-green)}
+.fx-change.down{color:var(--accent-red)}
 .clickable{cursor:pointer;transition:all 0.2s}
-.clickable:hover{background:#1a1a1a}
-.search-box{padding:10px 16px;background:#0f0f0f;border:1px solid #222;border-radius:6px;color:#fff;font-size:14px;width:100%;margin-bottom:16px;transition:all 0.2s}
-.search-box:focus{outline:none;border-color:#444;background:#1a1a1a}
-.search-box::placeholder{color:#666}
+.clickable:hover{background:var(--bg-hover)}
+.search-box{padding:10px 16px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:6px;color:var(--text-primary);font-size:14px;width:100%;margin-bottom:16px;transition:all 0.2s}
+.search-box:focus{outline:none;border-color:var(--border-tertiary);background:var(--bg-hover)}
+.search-box::placeholder{color:var(--text-tertiary)}
 .filter-bar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;z-index:1000}
 .modal.active{display:flex}
-.modal-content{background:#0a0a0a;border:1px solid #333;border-radius:12px;max-width:800px;max-height:90vh;overflow-y:auto;padding:32px;position:relative}
-.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:#999;font-size:24px;cursor:pointer;padding:8px;transition:color 0.2s}
-.modal-close:hover{color:#fff}
+.modal-content{background:var(--bg-primary);border:1px solid var(--border-secondary);border-radius:12px;max-width:800px;max-height:90vh;overflow-y:auto;padding:32px;position:relative}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-secondary);font-size:24px;cursor:pointer;padding:8px;transition:color 0.2s}
+.modal-close:hover{color:var(--text-primary)}
 .modal-header{font-size:24px;font-weight:600;margin-bottom:24px}
 .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:24px 0}
-.detail-section{background:#0f0f0f;border:1px solid #222;border-radius:8px;padding:20px}
-.detail-title{font-size:14px;font-weight:600;color:#999;margin-bottom:16px;text-transform:uppercase}
-.detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1a1a1a}
+.detail-section{background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:8px;padding:20px}
+.detail-title{font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:16px;text-transform:uppercase}
+.detail-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-primary)}
 .detail-row:last-child{border:none}
-.detail-label{color:#999;font-size:14px}
+.detail-label{color:var(--text-secondary);font-size:14px}
 .detail-value{font-weight:600;font-size:14px}
 .score-breakdown{margin:24px 0}
-.score-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#0f0f0f;border-radius:6px;margin-bottom:8px}
-.score-bar{flex:1;height:8px;background:#222;border-radius:4px;margin:0 16px;overflow:hidden}
-.score-fill{height:100%;background:#4ade80;border-radius:4px;transition:width 0.3s}
+.score-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:var(--bg-tertiary);border-radius:6px;margin-bottom:8px}
+.score-bar{flex:1;height:8px;background:var(--border-primary);border-radius:4px;margin:0 16px;overflow:hidden}
+.score-fill{height:100%;background:var(--accent-green);border-radius:4px;transition:width 0.3s}
 .audit-trail{margin:24px 0}
-.audit-item{display:flex;gap:16px;padding:12px;border-left:2px solid #333;margin-left:8px}
-.audit-time{color:#999;font-size:13px;min-width:120px}
+.audit-item{display:flex;gap:16px;padding:12px;border-left:2px solid var(--border-secondary);margin-left:8px}
+.audit-time{color:var(--text-secondary);font-size:13px;min-width:120px}
 .audit-event{font-size:14px}
-.rule-card{background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:24px;margin-bottom:16px;transition:all 0.2s}
-.rule-card:hover{border-color:#333}
+.rule-card{background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:12px;padding:24px;margin-bottom:16px;transition:all 0.2s}
+.rule-card:hover{border-color:var(--border-secondary)}
 .rule-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:16px}
 .rule-title{font-size:18px;font-weight:600;margin-bottom:4px}
-.rule-confidence{font-size:14px;color:#4ade80}
-.rule-toggle{background:#4ade80;color:#000;padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s}
-.rule-toggle:hover{background:#5be89b}
-.rule-criteria{background:#000;border-radius:8px;padding:16px;margin:12px 0}
+.rule-confidence{font-size:14px;color:var(--accent-green)}
+.rule-toggle{background:var(--accent-green);color:var(--bg-primary);padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.rule-toggle:hover{opacity:0.9}
+.rule-criteria{background:var(--bg-primary);border-radius:8px;padding:16px;margin:12px 0}
 .criterion{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:14px}
-.criterion::before{content:"•";color:#4ade80;font-weight:700;font-size:20px}
-.rule-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid #222}
+.criterion::before{content:"•";color:var(--accent-green);font-weight:700;font-size:20px}
+.rule-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-primary)}
 .stat-item{display:flex;flex-direction:column}
 .stat-value{font-size:20px;font-weight:700;margin-bottom:4px}
-.stat-label{font-size:12px;color:#999}
-.tier-card{background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:24px;margin-bottom:16px}
+.stat-label{font-size:12px;color:var(--text-secondary)}
+.tier-card{background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:12px;padding:24px;margin-bottom:16px}
 .tier-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .tier-icon{font-size:32px}
 .tier-info h3{font-size:18px;font-weight:600;margin-bottom:4px}
-.tier-info p{font-size:14px;color:#999}
-.tier-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid #222}
-.progress-bar{height:8px;background:#222;border-radius:4px;overflow:hidden;margin:8px 0}
-.progress-fill{height:100%;background:#4ade80;border-radius:4px;transition:width 0.3s}
-.safeguard-section{background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:24px;margin-bottom:24px}
-.safeguard-title{font-size:16px;font-weight:600;margin-bottom:16px;text-transform:uppercase;color:#999}
-.safeguard-item{display:flex;align-items:start;gap:12px;padding:12px;border-bottom:1px solid #1a1a1a}
+.tier-info p{font-size:14px;color:var(--text-secondary)}
+.tier-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border-primary)}
+.progress-bar{height:8px;background:var(--border-primary);border-radius:4px;overflow:hidden;margin:8px 0}
+.progress-fill{height:100%;background:var(--accent-green);border-radius:4px;transition:width 0.3s}
+.safeguard-section{background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:12px;padding:24px;margin-bottom:24px}
+.safeguard-title{font-size:16px;font-weight:600;margin-bottom:16px;text-transform:uppercase;color:var(--text-secondary)}
+.safeguard-item{display:flex;align-items:start;gap:12px;padding:12px;border-bottom:1px solid var(--border-primary)}
 .safeguard-item:last-child{border:none}
-.safeguard-check{color:#4ade80;font-size:20px;flex-shrink:0}
+.safeguard-check{color:var(--accent-green);font-size:20px;flex-shrink:0}
 .safeguard-content h4{font-size:15px;font-weight:600;margin-bottom:4px}
-.safeguard-content p{font-size:14px;color:#999;line-height:1.5}
+.safeguard-content p{font-size:14px;color:var(--text-secondary);line-height:1.5}
 .metric-card{text-align:center;padding:20px}
 .metric-value{font-size:36px;font-weight:700;margin-bottom:8px}
-.metric-label{font-size:13px;color:#999}
-.metric-trend{font-size:12px;color:#4ade80;margin-top:4px}
-.loading{display:none;text-align:center;padding:40px;color:#999}
+.metric-label{font-size:13px;color:var(--text-secondary)}
+.metric-trend{font-size:12px;color:var(--accent-green);margin-top:4px}
+.loading{display:none;text-align:center;padding:40px;color:var(--text-secondary)}
 .loading.active{display:block}
 .tooltip{position:relative;cursor:help}
-.tooltip:hover::after{content:attr(data-tooltip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#1a1a1a;border:1px solid #333;padding:8px 12px;border-radius:6px;font-size:12px;white-space:nowrap;z-index:100;margin-bottom:8px}
-.empty-state{text-align:center;padding:60px 20px;color:#666}
+.tooltip:hover::after{content:attr(data-tooltip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--bg-hover);border:1px solid var(--border-secondary);padding:8px 12px;border-radius:6px;font-size:12px;white-space:nowrap;z-index:100;margin-bottom:8px}
+.empty-state{text-align:center;padding:60px 20px;color:var(--text-tertiary)}
 .empty-state-icon{font-size:48px;margin-bottom:16px;opacity:0.5}
 .empty-state-text{font-size:16px;margin-bottom:8px}
 .empty-state-subtext{font-size:14px;opacity:0.7}
-.connection-card{background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:24px;transition:all 0.2s}
-.connection-card:hover{border-color:#333;background:#1a1a1a}
+.connection-card{background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:12px;padding:24px;transition:all 0.2s}
+.connection-card:hover{border-color:var(--border-secondary);background:var(--bg-hover)}
 .connection-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
 .connection-icon{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px}
 .connection-info{flex:1}
 .connection-name{font-size:18px;font-weight:600;margin-bottom:4px}
-.connection-type{font-size:13px;color:#999}
+.connection-type{font-size:13px;color:var(--text-secondary)}
 .connection-status{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600}
-.status-connected{background:rgba(74,222,128,0.2);color:#4ade80}
-.status-syncing{background:rgba(96,165,250,0.2);color:#60a5fa}
-.status-error{background:rgba(248,113,113,0.2);color:#f87171}
-.status-disconnected{background:rgba(156,163,175,0.2);color:#9ca3af}
-.connection-details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding-top:16px;border-top:1px solid #222}
+.status-connected{background:rgba(74,222,128,0.2);color:var(--accent-green)}
+.status-syncing{background:rgba(96,165,250,0.2);color:var(--accent-blue)}
+.status-error{background:rgba(248,113,113,0.2);color:var(--accent-red)}
+.status-disconnected{background:rgba(156,163,175,0.2);color:var(--text-tertiary)}
+.connection-details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding-top:16px;border-top:1px solid var(--border-primary)}
 .connection-detail{display:flex;flex-direction:column}
-.detail-label{font-size:12px;color:#999;margin-bottom:4px}
+.detail-label{font-size:12px;color:var(--text-secondary);margin-bottom:4px}
 .detail-value{font-size:14px;font-weight:600}
-.sync-indicator{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#0f0f0f;border:1px solid #222;border-radius:6px;font-size:12px;color:#999}
-.sync-dot{width:6px;height:6px;border-radius:50%;background:#4ade80}
+.sync-indicator{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:6px;font-size:12px;color:var(--text-secondary)}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-green)}
 .sync-dot.syncing{animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 </style>
@@ -189,7 +228,7 @@ tr:hover{background:#0f0f0f}
 <div class="nav-item active" onclick="showPage('dashboard')">Dashboard</div>
 <div class="nav-item" onclick="showPage('connections')">
 Connections
-<span class="nav-badge" style="background:#4ade80;color:#000">6</span>
+<span class="nav-badge" style="background:var(--accent-green);color:var(--bg-primary)">6</span>
 </div>
 <div class="nav-item" onclick="showPage('exception-queue')">
 Exception Queue
@@ -216,12 +255,12 @@ Review Queue
 <div class="nav-item" onclick="showPage('settings')">Settings</div>
 </div>
 </div>
-<div style="padding:16px;border-top:1px solid #222">
+<div style="padding:16px;border-top:1px solid var(--border-primary)">
 <div style="display:flex;align-items:center;gap:12px">
-<div style="width:36px;height:36px;background:#333;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600">AM</div>
+<div style="width:36px;height:36px;background:var(--border-secondary);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600">AM</div>
 <div>
 <div style="font-size:14px;font-weight:600">Alex Morgan</div>
-<div style="font-size:12px;color:#999">Treasury Analyst</div>
+<div style="font-size:12px;color:var(--text-secondary)">Treasury Analyst</div>
 </div>
 </div>
 </div>
@@ -234,6 +273,10 @@ Review Queue
 <p id="page-subtitle">Real-time treasury reconciliation & exception management</p>
 </div>
 <div class="header-right">
+<button class="btn btn-secondary btn-small" onclick="toggleTheme()" style="padding:8px 12px;display:flex;align-items:center;gap:6px">
+<span id="theme-icon">🌙</span>
+<span id="theme-text">Dark</span>
+</button>
 <select class="entity-selector" onchange="switchEntity(this.value)" id="entity-dropdown">
 <option value="all">All Entities (Consolidated)</option>
 <option value="uk">UK Operations</option>
@@ -296,37 +339,7 @@ us:{
 };
 
 // Entity-specific data
-const data = {
-all:{
-autoResolved:198,
-totalExceptions:234,
-tier1:140,
-tier2:58,
-tier3:36,
-accuracy:100,
-timeSaved:297,
-costSaved:14850,
-automationRate:85,
-pspBreakdown:[
-{psp:'Stripe',expected:'€2.84M',received:'€2.82M',variance:'-€20K',status:'Variance',amount:2820000},
-{psp:'Klarna',expected:'€2.15M',received:'€2.10M',variance:'-€50K',status:'Variance',amount:2100000},
-{psp:'PayPal',expected:'€1.92M',received:'€1.92M',variance:'€0',status:'Matched',amount:1920000},
-{psp:'Adyen',expected:'€1.85M',received:'€1.85M',variance:'€0',status:'Matched',amount:1850000}
-],
-agingData:{onTrack:28,watch:14,aging:5,breached:0},
-transactions:[
-{id:'TX-001',amount:5000,psp:'Stripe',age:2,confidence:78,status:'Open',action:'Manual Review'},
-{id:'TX-002',amount:2300,psp:'Klarna',age:1,confidence:92,status:'Queued',action:'Auto T+1'},
-{id:'TX-003',amount:1200,psp:'PayPal',age:0,confidence:99,status:'Auto-Resolved',action:'Complete'},
-{id:'TX-004',amount:8750,psp:'Adyen',age:3,confidence:72,status:'Open',action:'Manual Review'},
-{id:'TX-005',amount:3450,psp:'Stripe',age:1,confidence:96,status:'Auto-Resolved',action:'Complete'},
-{id:'TX-006',amount:12500,psp:'Klarna',age:4,confidence:68,status:'Open',action:'Manual Review'},
-{id:'TX-007',amount:4200,psp:'PayPal',age:0,confidence:99,status:'Auto-Resolved',action:'Complete'},
-{id:'TX-008',amount:6800,psp:'Stripe',age:2,confidence:89,status:'Queued',action:'Auto T+2'},
-{id:'TX-009',amount:15000,psp:'Adyen',age:5,confidence:65,status:'Open',action:'Manual Review'},
-{id:'TX-010',amount:2100,psp:'Klarna',age:1,confidence:94,status:'Auto-Resolved',action:'Complete'}
-]
-},
+const entityData = {
 uk:{
 autoResolved:82,
 totalExceptions:97,
@@ -335,7 +348,6 @@ tier2:24,
 tier3:15,
 accuracy:100,
 timeSaved:123,
-costSaved:6150,
 automationRate:85,
 pspBreakdown:[
 {psp:'Stripe',expected:'£1.24M',received:'£1.23M',variance:'-£10K',status:'Variance',amount:1230000},
@@ -360,7 +372,6 @@ tier2:20,
 tier3:12,
 accuracy:100,
 timeSaved:102,
-costSaved:5100,
 automationRate:85,
 pspBreakdown:[
 {psp:'Stripe',expected:'€1.08M',received:'€1.07M',variance:'-€8K',status:'Variance',amount:1070000},
@@ -384,7 +395,6 @@ tier2:14,
 tier3:9,
 accuracy:100,
 timeSaved:72,
-costSaved:3600,
 automationRate:84,
 pspBreakdown:[
 {psp:'Stripe',expected:'$620K',received:'$615K',variance:'-$5K',status:'Variance',amount:615000},
@@ -401,15 +411,63 @@ transactions:[
 }
 };
 
+// Consolidated "All" data - combines UK + EU + US
+const data = {
+all:{
+autoResolved:entityData.uk.autoResolved+entityData.eu.autoResolved+entityData.us.autoResolved,
+totalExceptions:entityData.uk.totalExceptions+entityData.eu.totalExceptions+entityData.us.totalExceptions,
+tier1:entityData.uk.tier1+entityData.eu.tier1+entityData.us.tier1,
+tier2:entityData.uk.tier2+entityData.eu.tier2+entityData.us.tier2,
+tier3:entityData.uk.tier3+entityData.eu.tier3+entityData.us.tier3,
+accuracy:100,
+timeSaved:entityData.uk.timeSaved+entityData.eu.timeSaved+entityData.us.timeSaved,
+automationRate:85,
+pspBreakdown:[
+{psp:'Stripe',expected:'€2.84M',received:'€2.82M',variance:'-€20K',status:'Variance',amount:2820000},
+{psp:'Klarna',expected:'€2.15M',received:'€2.10M',variance:'-€50K',status:'Variance',amount:2100000},
+{psp:'PayPal',expected:'€1.92M',received:'€1.92M',variance:'€0',status:'Matched',amount:1920000},
+{psp:'Adyen',expected:'€1.85M',received:'€1.85M',variance:'€0',status:'Matched',amount:1850000}
+],
+agingData:{
+onTrack:entityData.uk.agingData.onTrack+entityData.eu.agingData.onTrack+entityData.us.agingData.onTrack,
+watch:entityData.uk.agingData.watch+entityData.eu.agingData.watch+entityData.us.agingData.watch,
+aging:entityData.uk.agingData.aging+entityData.eu.agingData.aging+entityData.us.agingData.aging,
+breached:entityData.uk.agingData.breached+entityData.eu.agingData.breached+entityData.us.agingData.breached
+},
+transactions:[...entityData.uk.transactions,...entityData.eu.transactions,...entityData.us.transactions]
+},
+uk:entityData.uk,
+eu:entityData.eu,
+us:entityData.us
+};
+
 // Initialize
 setTimeout(()=>{
 document.querySelector('.loading').classList.remove('active');
 showPage('dashboard');
+// Load theme preference
+const savedTheme=localStorage.getItem('theme')||'dark';
+if(savedTheme==='light'){
+document.documentElement.setAttribute('data-theme','light');
+document.getElementById('theme-icon').textContent='☀️';
+document.getElementById('theme-text').textContent='Light';
+}
 },500);
+
+function toggleTheme(){
+const html=document.documentElement;
+const currentTheme=html.getAttribute('data-theme');
+const newTheme=currentTheme==='light'?'dark':'light';
+html.setAttribute('data-theme',newTheme);
+localStorage.setItem('theme',newTheme);
+document.getElementById('theme-icon').textContent=newTheme==='light'?'☀️':'🌙';
+document.getElementById('theme-text').textContent=newTheme==='light'?'Light':'Dark';
+}
 
 function switchEntity(entity){
 currentEntity=entity;
 document.getElementById('entity-dropdown').value=entity;
+console.log('Switching to entity:',entity,'Data:',data[entity]);
 showPage(currentPage);
 }
 
@@ -429,6 +487,8 @@ if(itemPage===page)item.classList.add('active');
 const d=data[currentEntity];
 const curr=currency[currentEntity];
 const rates=fxRates[currentEntity];
+
+console.log('showPage called:',{page,entity:currentEntity,autoResolved:d.autoResolved,currency:curr,pspCount:d.pspBreakdown.length});
 
 // Update badges
 document.getElementById('exception-count').textContent=d.totalExceptions-d.autoResolved;
@@ -484,7 +544,7 @@ document.getElementById('content').innerHTML=`
 <div class="banner-icon">✅</div>
 <div>
 <div class="banner-title">All Systems Connected</div>
-<div style="font-size:14px;color:#999;margin-top:4px">6 integrations active • Auto-sync enabled • Last sync: 2 hours ago</div>
+<div style="font-size:14px;color:var(--text-secondary);margin-top:4px">6 integrations active • Auto-sync enabled • Last sync: 2 hours ago</div>
 </div>
 </div>
 <div class="banner-stats">
@@ -548,7 +608,7 @@ Connected
 <div class="connection-card">
 <div class="connection-header">
 <div class="connection-icon" style="background:#FFB3C7">
-<div style="color:#000;font-weight:700;font-size:18px">K</div>
+<div style="color:var(--bg-primary);font-weight:700;font-size:18px">K</div>
 </div>
 <div class="connection-info">
 <div class="connection-name">Klarna</div>
@@ -582,7 +642,7 @@ Connected
 <div class="connection-card">
 <div class="connection-header">
 <div class="connection-icon" style="background:#0070BA">
-<div style="color:#fff;font-weight:700;font-size:18px">P</div>
+<div style="color:var(--text-primary);font-weight:700;font-size:18px">P</div>
 </div>
 <div class="connection-info">
 <div class="connection-name">PayPal</div>
@@ -616,7 +676,7 @@ Connected
 <div class="connection-card">
 <div class="connection-header">
 <div class="connection-icon" style="background:#0ABF53">
-<div style="color:#fff;font-weight:700;font-size:18px">A</div>
+<div style="color:var(--text-primary);font-weight:700;font-size:18px">A</div>
 </div>
 <div class="connection-info">
 <div class="connection-name">Adyen</div>
@@ -660,7 +720,7 @@ Connected
 <div class="connection-card">
 <div class="connection-header">
 <div class="connection-icon" style="background:#003C71">
-<div style="color:#fff;font-weight:700;font-size:16px">CITI</div>
+<div style="color:var(--text-primary);font-weight:700;font-size:16px">CITI</div>
 </div>
 <div class="connection-info">
 <div class="connection-name">Citi Business Account</div>
@@ -704,7 +764,7 @@ Connected
 <div class="connection-card">
 <div class="connection-header">
 <div class="connection-icon" style="background:#F77F00">
-<div style="color:#fff;font-weight:700;font-size:16px">NS</div>
+<div style="color:var(--text-primary);font-weight:700;font-size:16px">NS</div>
 </div>
 <div class="connection-info">
 <div class="connection-name">NetSuite</div>
@@ -749,22 +809,22 @@ Connected
 <div style="text-align:center;padding:20px;border:1px dashed #333;border-radius:8px;cursor:pointer;transition:all 0.2s" onclick="alert('Connect Xero feature coming soon')">
 <div style="font-size:32px;margin-bottom:8px">📊</div>
 <div style="font-size:14px;font-weight:600">Xero</div>
-<div style="font-size:12px;color:#999;margin-top:4px">Accounting</div>
+<div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Accounting</div>
 </div>
 <div style="text-align:center;padding:20px;border:1px dashed #333;border-radius:8px;cursor:pointer;transition:all 0.2s" onclick="alert('Connect QuickBooks feature coming soon')">
 <div style="font-size:32px;margin-bottom:8px">📗</div>
 <div style="font-size:14px;font-weight:600">QuickBooks</div>
-<div style="font-size:12px;color:#999;margin-top:4px">Accounting</div>
+<div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Accounting</div>
 </div>
 <div style="text-align:center;padding:20px;border:1px dashed #333;border-radius:8px;cursor:pointer;transition:all 0.2s" onclick="alert('Connect HSBC feature coming soon')">
 <div style="font-size:32px;margin-bottom:8px">🏦</div>
 <div style="font-size:14px;font-weight:600">HSBC</div>
-<div style="font-size:12px;color:#999;margin-top:4px">Bank</div>
+<div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Bank</div>
 </div>
 <div style="text-align:center;padding:20px;border:1px dashed #333;border-radius:8px;cursor:pointer;transition:all 0.2s" onclick="alert('Connect Barclays feature coming soon')">
 <div style="font-size:32px;margin-bottom:8px">🏦</div>
 <div style="font-size:14px;font-weight:600">Barclays</div>
-<div style="font-size:12px;color:#999;margin-top:4px">Bank</div>
+<div style="font-size:12px;color:var(--text-secondary);margin-top:4px">Bank</div>
 </div>
 </div>
 </div>
@@ -775,12 +835,12 @@ function renderDashboard(d,curr,rates){
 document.getElementById('page-title').textContent='Dashboard';
 document.getElementById('page-subtitle').textContent='Real-time treasury reconciliation & exception management';
 document.getElementById('content').innerHTML=`
-<div style="background:#0f0f0f;border:1px solid #222;border-radius:8px;padding:16px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center">
+<div style="background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:8px;padding:16px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center">
 <div style="display:flex;align-items:center;gap:12px">
 <div class="sync-dot"></div>
 <div>
 <div style="font-size:14px;font-weight:600">All integrations synced</div>
-<div style="font-size:12px;color:#999">Last sync: 2 hours ago • Next sync: 6:00 AM daily</div>
+<div style="font-size:12px;color:var(--text-secondary)">Last sync: 2 hours ago • Next sync: 6:00 AM daily</div>
 </div>
 </div>
 <button class="btn btn-secondary btn-small" onclick="showPage('connections')">View Connections</button>
@@ -791,7 +851,8 @@ document.getElementById('content').innerHTML=`
 <div class="banner-icon">🤖</div>
 <div>
 <div class="banner-title">Auto-Resolution Active</div>
-<div style="font-size:14px;color:#999;margin-top:4px">6 matching rules running 24/7 • ${d.automationRate}% automation rate</div>
+<div style="font-size:14px;color:var(--text-secondary);margin-top:4px">6 matching rules running 24/7 • ${d.automationRate}% automation rate</div>
+<div style="font-size:12px;color:var(--accent-yellow);margin-top:8px;padding:6px 12px;background:rgba(250,204,21,0.1);border-radius:4px;display:inline-block">DEBUG: Entity=${currentEntity} | Currency=${curr} | Auto-resolved=${d.autoResolved}</div>
 </div>
 </div>
 <div class="banner-stats">
@@ -804,8 +865,8 @@ document.getElementById('content').innerHTML=`
 <div class="banner-stat-label">Time saved</div>
 </div>
 <div class="banner-stat">
-<div class="banner-stat-value">${curr}${d.costSaved.toLocaleString()}</div>
-<div class="banner-stat-label">Cost savings</div>
+<div class="banner-stat-value">${d.accuracy}%</div>
+<div class="banner-stat-label">Accuracy rate</div>
 </div>
 </div>
 <div class="banner-actions">
@@ -899,7 +960,7 @@ ${Object.entries(rates).map(([pair,data])=>`
 </div>
 `).join('')}
 </div>
-<div style="margin-top:16px;padding:12px;background:#0f0f0f;border-radius:6px;font-size:13px;color:#999">
+<div style="margin-top:16px;padding:12px;background:var(--bg-tertiary);border-radius:6px;font-size:13px;color:var(--text-secondary)">
 <strong>Note:</strong> These are your corporate monthly rates set by the finance team. Used for reconciliation variance calculations. Last updated: ${new Date(Date.now()-5*24*60*60*1000).toLocaleDateString('en-GB')} by Alex Morgan.
 </div>
 </div>
@@ -907,20 +968,20 @@ ${Object.entries(rates).map(([pair,data])=>`
 <div class="section-title" style="margin-bottom:16px">Quick Stats</div>
 <div class="section-subtitle" style="margin-bottom:20px">Key performance metrics</div>
 <div style="display:grid;gap:16px">
-<div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #222">
-<span style="color:#999">Automation Rate</span>
+<div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border-primary)">
+<span style="color:var(--text-secondary)">Automation Rate</span>
 <strong>${d.automationRate}%</strong>
 </div>
-<div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #222">
-<span style="color:#999">Accuracy</span>
+<div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border-primary)">
+<span style="color:var(--text-secondary)">Accuracy</span>
 <strong class="confidence-high">${d.accuracy}%</strong>
 </div>
-<div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #222">
-<span style="color:#999">Total Exceptions</span>
+<div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid var(--border-primary)">
+<span style="color:var(--text-secondary)">Total Exceptions</span>
 <strong>${d.totalExceptions}</strong>
 </div>
 <div style="display:flex;justify-content:space-between">
-<span style="color:#999">Auto-Resolved</span>
+<span style="color:var(--text-secondary)">Auto-Resolved</span>
 <strong class="confidence-high">${d.autoResolved}</strong>
 </div>
 </div>
@@ -973,10 +1034,10 @@ document.getElementById('page-subtitle').textContent='Near-100% automation with 
 document.getElementById('content').innerHTML=`
 <div class="section">
 <div class="card">
-<div style="text-align:center;padding:20px 0;border-bottom:1px solid #222;margin-bottom:32px">
+<div style="text-align:center;padding:20px 0;border-bottom:1px solid var(--border-primary);margin-bottom:32px">
 <div style="font-size:64px;font-weight:700;margin-bottom:8px">${d.automationRate}%</div>
-<div style="font-size:18px;color:#999">Automation Rate</div>
-<div style="font-size:14px;color:#666;margin-top:8px">${d.autoResolved} of ${d.totalExceptions} exceptions auto-resolved</div>
+<div style="font-size:18px;color:var(--text-secondary)">Automation Rate</div>
+<div style="font-size:14px;color:var(--text-tertiary);margin-top:8px">${d.autoResolved} of ${d.totalExceptions} exceptions auto-resolved</div>
 </div>
 
 <div class="tier-card">
@@ -992,7 +1053,7 @@ document.getElementById('content').innerHTML=`
 <div class="progress-fill" style="width:${d.tier1/d.totalExceptions*100}%"></div>
 </div>
 </div>
-<div style="background:#000;border-radius:8px;padding:16px;margin-top:16px">
+<div style="background:var(--bg-secondary);border-radius:8px;padding:16px;margin-top:16px">
 <div style="font-weight:600;margin-bottom:12px">Criteria:</div>
 <div class="criterion">Exact amount match (to the cent)</div>
 <div class="criterion">Date within T+0 to T+3 settlement window</div>
@@ -1029,7 +1090,7 @@ document.getElementById('content').innerHTML=`
 <div class="progress-fill" style="width:${d.tier2/d.totalExceptions*100}%;background:#facc15"></div>
 </div>
 </div>
-<div style="background:#000;border-radius:8px;padding:16px;margin-top:16px">
+<div style="background:var(--bg-secondary);border-radius:8px;padding:16px;margin-top:16px">
 <div style="font-weight:600;margin-bottom:12px">Criteria:</div>
 <div class="criterion">Amount match within ${curr}0.50 tolerance</div>
 <div class="criterion">Date within ±5 days</div>
@@ -1065,10 +1126,10 @@ document.getElementById('content').innerHTML=`
 </div>
 <div style="margin:16px 0">
 <div class="progress-bar">
-<div class="progress-fill" style="width:${d.tier3/d.totalExceptions*100}%;background:#fb923c"></div>
+<div class="progress-fill" style="width:${d.tier3/d.totalExceptions*100}%;background:var(--accent-orange)"></div>
 </div>
 </div>
-<div style="background:#000;border-radius:8px;padding:16px;margin-top:16px">
+<div style="background:var(--bg-secondary);border-radius:8px;padding:16px;margin-top:16px">
 <div style="font-weight:600;margin-bottom:12px">Escalation Triggers:</div>
 <div class="criterion">Amount variance > ${curr}0.50</div>
 <div class="criterion">Date outside ±5 days</div>
@@ -1101,16 +1162,11 @@ document.getElementById('content').innerHTML=`
 <div class="section-header">
 <div class="section-title">Performance Metrics</div>
 </div>
-<div class="grid grid-4">
+<div class="grid grid-3">
 <div class="card metric-card">
 <div class="metric-value">${d.timeSaved}h</div>
 <div class="metric-label">Time Saved This Month</div>
 <div class="metric-trend">+12% vs last month</div>
-</div>
-<div class="card metric-card">
-<div class="metric-value">${curr}${d.costSaved.toLocaleString()}</div>
-<div class="metric-label">Cost Savings</div>
-<div class="metric-trend">+8% vs last month</div>
 </div>
 <div class="card metric-card">
 <div class="metric-value">${d.accuracy}%</div>
@@ -1149,13 +1205,13 @@ document.getElementById('content').innerHTML=`
 <div class="rule-toggle">Active ✓</div>
 </div>
 <div class="rule-criteria">
-<div style="font-weight:600;margin-bottom:12px;color:#999">IF ALL CONDITIONS TRUE:</div>
+<div style="font-weight:600;margin-bottom:12px;color:var(--text-secondary)">IF ALL CONDITIONS TRUE:</div>
 <div class="criterion">Amount matches exactly (${curr}0.00 variance)</div>
 <div class="criterion">Date within T+0 to T+3</div>
 <div class="criterion">Reference partial match (≥70%)</div>
 <div class="criterion">Same PSP → Same bank account</div>
 <div class="criterion">Amount < ${curr}10,000</div>
-<div style="font-weight:600;margin-top:16px;color:#4ade80">THEN: ✅ Auto-resolve silently</div>
+<div style="font-weight:600;margin-top:16px;color:var(--accent-green)">THEN: ✅ Auto-resolve silently</div>
 </div>
 <div class="rule-stats">
 <div class="stat-item">
@@ -1178,12 +1234,12 @@ document.getElementById('content').innerHTML=`
 <div class="rule-toggle">Active ✓</div>
 </div>
 <div class="rule-criteria">
-<div style="font-weight:600;margin-bottom:12px;color:#999">IF ALL CONDITIONS TRUE:</div>
+<div style="font-weight:600;margin-bottom:12px;color:var(--text-secondary)">IF ALL CONDITIONS TRUE:</div>
 <div class="criterion">Amount variance ≤ ${curr}0.50</div>
 <div class="criterion">Date within ±5 days</div>
 <div class="criterion">PSP fees documented</div>
 <div class="criterion">Amount < ${curr}25,000</div>
-<div style="font-weight:600;margin-top:16px;color:#facc15">THEN: ⚠️ Auto-resolve + flag for review</div>
+<div style="font-weight:600;margin-top:16px;color:var(--accent-yellow)">THEN: ⚠️ Auto-resolve + flag for review</div>
 </div>
 <div class="rule-stats">
 <div class="stat-item">
@@ -1206,12 +1262,12 @@ document.getElementById('content').innerHTML=`
 <div class="rule-toggle">Active ✓</div>
 </div>
 <div class="rule-criteria">
-<div style="font-weight:600;margin-bottom:12px;color:#999">IF ALL CONDITIONS TRUE:</div>
+<div style="font-weight:600;margin-bottom:12px;color:var(--text-secondary)">IF ALL CONDITIONS TRUE:</div>
 <div class="criterion">PSP = Stripe</div>
 <div class="criterion">Bank receipt exactly T+2 days after PSP</div>
 <div class="criterion">Amount exact match</div>
 <div class="criterion">Same settlement account</div>
-<div style="font-weight:600;margin-top:16px;color:#4ade80">THEN: ✅ Auto-resolve silently</div>
+<div style="font-weight:600;margin-top:16px;color:var(--accent-green)">THEN: ✅ Auto-resolve silently</div>
 </div>
 <div class="rule-stats">
 <div class="stat-item">
@@ -1234,12 +1290,12 @@ document.getElementById('content').innerHTML=`
 <div class="rule-toggle">Active ✓</div>
 </div>
 <div class="rule-criteria">
-<div style="font-weight:600;margin-bottom:12px;color:#999">IF ALL CONDITIONS TRUE:</div>
+<div style="font-weight:600;margin-bottom:12px;color:var(--text-secondary)">IF ALL CONDITIONS TRUE:</div>
 <div class="criterion">Foreign currency transaction</div>
 <div class="criterion">Variance < 0.5% (FX movement)</div>
 <div class="criterion">FX rate matches spot rate ±0.3%</div>
 <div class="criterion">Date within ±3 days</div>
-<div style="font-weight:600;margin-top:16px;color:#facc15">THEN: ⚠️ Auto-resolve + flag for review</div>
+<div style="font-weight:600;margin-top:16px;color:var(--accent-yellow)">THEN: ⚠️ Auto-resolve + flag for review</div>
 </div>
 <div class="rule-stats">
 <div class="stat-item">
@@ -1262,12 +1318,12 @@ document.getElementById('content').innerHTML=`
 <div class="rule-toggle">Active ✓</div>
 </div>
 <div class="rule-criteria">
-<div style="font-weight:600;margin-bottom:12px;color:#999">IF ALL CONDITIONS TRUE:</div>
+<div style="font-weight:600;margin-bottom:12px;color:var(--text-secondary)">IF ALL CONDITIONS TRUE:</div>
 <div class="criterion">Multiple bank transfers same day</div>
 <div class="criterion">Sum matches PSP settlement total</div>
 <div class="criterion">All from same PSP settlement account</div>
 <div class="criterion">Date within T+0 to T+3</div>
-<div style="font-weight:600;margin-top:16px;color:#facc15">THEN: ⚠️ Auto-resolve + flag for review</div>
+<div style="font-weight:600;margin-top:16px;color:var(--accent-yellow)">THEN: ⚠️ Auto-resolve + flag for review</div>
 </div>
 <div class="rule-stats">
 <div class="stat-item">
@@ -1290,12 +1346,12 @@ document.getElementById('content').innerHTML=`
 <div class="rule-toggle">Active ✓</div>
 </div>
 <div class="rule-criteria">
-<div style="font-weight:600;margin-bottom:12px;color:#999">IF ALL CONDITIONS TRUE:</div>
+<div style="font-weight:600;margin-bottom:12px;color:var(--text-secondary)">IF ALL CONDITIONS TRUE:</div>
 <div class="criterion">Matches historical pattern (≥5 occurrences)</div>
 <div class="criterion">Same PSP + amount range (±10%)</div>
 <div class="criterion">Timing consistent with past</div>
 <div class="criterion">No suspicious indicators</div>
-<div style="font-weight:600;margin-top:16px;color:#facc15">THEN: ⚠️ Auto-resolve + flag for review</div>
+<div style="font-weight:600;margin-top:16px;color:var(--accent-yellow)">THEN: ⚠️ Auto-resolve + flag for review</div>
 </div>
 <div class="rule-stats">
 <div class="stat-item">
@@ -1318,11 +1374,11 @@ document.getElementById('page-subtitle').textContent='Items auto-resolved with m
 document.getElementById('content').innerHTML=`
 <div class="section">
 <div class="card">
-<div style="background:#1a1a1a;border-radius:8px;padding:20px;margin-bottom:24px">
+<div style="background:var(--bg-hover);border-radius:8px;padding:20px;margin-bottom:24px">
 <div style="display:flex;justify-content:space-between;align-items:center">
 <div>
 <div style="font-size:20px;font-weight:600;margin-bottom:4px">⚠️ ${d.tier2} items flagged for review</div>
-<div style="font-size:14px;color:#999">Auto-resolved with 85-99% confidence • Recommend spot-check before end of day</div>
+<div style="font-size:14px;color:var(--text-secondary)">Auto-resolved with 85-99% confidence • Recommend spot-check before end of day</div>
 </div>
 <div style="display:flex;gap:12px">
 <button class="btn btn-secondary" onclick="alert('Review each feature coming soon')">Review Each</button>
@@ -1376,24 +1432,24 @@ document.getElementById('content').innerHTML=`
 </tbody>
 </table>
 
-<div style="margin-top:32px;padding:24px;background:#0f0f0f;border:1px solid #222;border-radius:12px">
+<div style="margin-top:32px;padding:24px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:12px">
 <div style="font-weight:600;margin-bottom:12px">📊 Review Queue Summary</div>
 <div class="grid grid-3" style="margin-top:16px">
 <div>
 <div style="font-size:24px;font-weight:700;margin-bottom:4px">${d.tier2}</div>
-<div style="font-size:13px;color:#999">Items Pending Review</div>
+<div style="font-size:13px;color:var(--text-secondary)">Items Pending Review</div>
 </div>
 <div>
 <div style="font-size:24px;font-weight:700;margin-bottom:4px">89.7%</div>
-<div style="font-size:13px;color:#999">Avg Confidence Score</div>
+<div style="font-size:13px;color:var(--text-secondary)">Avg Confidence Score</div>
 </div>
 <div>
 <div style="font-size:24px;font-weight:700;margin-bottom:4px">18 min</div>
-<div style="font-size:13px;color:#999">Est. Review Time</div>
+<div style="font-size:13px;color:var(--text-secondary)">Est. Review Time</div>
 </div>
 </div>
-<div style="margin-top:20px;padding-top:20px;border-top:1px solid #222">
-<div style="font-size:13px;color:#999">Note: Approving these validates the matches and improves future confidence scoring through machine learning.</div>
+<div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--border-primary)">
+<div style="font-size:13px;color:var(--text-secondary)">Note: Approving these validates the matches and improves future confidence scoring through machine learning.</div>
 </div>
 </div>
 </div>
@@ -1627,24 +1683,24 @@ document.getElementById('content').innerHTML=`
 </tbody>
 </table>
 
-<div style="margin-top:32px;padding:24px;background:#0f0f0f;border:1px solid #222;border-radius:12px">
+<div style="margin-top:32px;padding:24px;background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:12px">
 <div style="font-weight:600;margin-bottom:16px">📊 Summary (Last 30 Days)</div>
 <div class="grid grid-4">
 <div>
 <div style="font-size:28px;font-weight:700;margin-bottom:4px">${d.totalExceptions}</div>
-<div style="font-size:13px;color:#999">Total Resolved</div>
+<div style="font-size:13px;color:var(--text-secondary)">Total Resolved</div>
 </div>
 <div>
-<div style="font-size:28px;font-weight:700;margin-bottom:4px;color:#4ade80">${d.autoResolved}</div>
-<div style="font-size:13px;color:#999">Auto-Resolved (${Math.round(d.autoResolved/d.totalExceptions*100)}%)</div>
+<div style="font-size:28px;font-weight:700;margin-bottom:4px;color:var(--accent-green)">${d.autoResolved}</div>
+<div style="font-size:13px;color:var(--text-secondary)">Auto-Resolved (${Math.round(d.autoResolved/d.totalExceptions*100)}%)</div>
 </div>
 <div>
 <div style="font-size:28px;font-weight:700;margin-bottom:4px">${d.tier3}</div>
-<div style="font-size:13px;color:#999">Manual (${Math.round(d.tier3/d.totalExceptions*100)}%)</div>
+<div style="font-size:13px;color:var(--text-secondary)">Manual (${Math.round(d.tier3/d.totalExceptions*100)}%)</div>
 </div>
 <div>
 <div style="font-size:28px;font-weight:700;margin-bottom:4px">2.4</div>
-<div style="font-size:13px;color:#999">Avg Days to Resolve</div>
+<div style="font-size:13px;color:var(--text-secondary)">Avg Days to Resolve</div>
 </div>
 </div>
 </div>
@@ -1658,16 +1714,11 @@ document.getElementById('page-title').textContent='CFO Dashboard';
 document.getElementById('page-subtitle').textContent='Executive view of treasury performance & automation ROI';
 document.getElementById('content').innerHTML=`
 <div class="section">
-<div class="grid grid-4">
+<div class="grid grid-3">
 <div class="card metric-card">
 <div class="metric-value">${d.automationRate}%</div>
 <div class="metric-label">Automation Rate</div>
 <div class="metric-trend">+5% vs last month</div>
-</div>
-<div class="card metric-card">
-<div class="metric-value">${curr}${d.costSaved.toLocaleString()}</div>
-<div class="metric-label">Labor Cost Savings</div>
-<div class="metric-trend">This month</div>
 </div>
 <div class="card metric-card">
 <div class="metric-value">2.4 days</div>
@@ -1689,58 +1740,58 @@ document.getElementById('content').innerHTML=`
 <div class="card">
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
 <div>
-<div style="font-size:14px;font-weight:600;color:#999;margin-bottom:16px">EXCEPTIONS BREAKDOWN</div>
-<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #222">
+<div style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:16px">EXCEPTIONS BREAKDOWN</div>
+<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-primary)">
 <span>Total Exceptions:</span>
 <strong>${d.totalExceptions}</strong>
 </div>
-<div style="padding:12px 0;border-bottom:1px solid #222">
+<div style="padding:12px 0;border-bottom:1px solid var(--border-primary)">
 <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-<span style="color:#4ade80">Auto-Resolved:</span>
+<span style="color:var(--accent-green)">Auto-Resolved:</span>
 <strong>${d.autoResolved} (${Math.round(d.autoResolved/d.totalExceptions*100)}%)</strong>
 </div>
-<div style="padding-left:20px;font-size:13px;color:#999;margin-bottom:4px">├─ Tier 1 (Silent): ${d.tier1}</div>
-<div style="padding-left:20px;font-size:13px;color:#999">└─ Tier 2 (Flagged): ${d.tier2}</div>
+<div style="padding-left:20px;font-size:13px;color:var(--text-secondary);margin-bottom:4px">├─ Tier 1 (Silent): ${d.tier1}</div>
+<div style="padding-left:20px;font-size:13px;color:var(--text-secondary)">└─ Tier 2 (Flagged): ${d.tier2}</div>
 </div>
-<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #222">
+<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-primary)">
 <span>Manual Review:</span>
 <strong>${d.tier3} (${Math.round(d.tier3/d.totalExceptions*100)}%)</strong>
 </div>
 <div style="padding:12px 0">
 <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-<span style="color:#999">Requires investigation:</span>
+<span style="color:var(--text-secondary)">Requires investigation:</span>
 <span>${d.tier3-6}</span>
 </div>
 <div style="display:flex;justify-content:space-between">
-<span style="color:#999">True exceptions:</span>
+<span style="color:var(--text-secondary)">True exceptions:</span>
 <span>6</span>
 </div>
 </div>
 </div>
 <div>
-<div style="font-size:14px;font-weight:600;color:#999;margin-bottom:16px">EFFICIENCY METRICS</div>
-<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #222">
+<div style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:16px">EFFICIENCY METRICS</div>
+<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-primary)">
 <span>Time Saved:</span>
 <strong>${d.timeSaved} hours</strong>
 </div>
-<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #222">
+<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border-primary)">
 <span>Cost Savings:</span>
 <strong>${curr}${d.costSaved.toLocaleString()}</strong>
 </div>
-<div style="padding:12px 0;border-bottom:1px solid #222">
+<div style="padding:12px 0;border-bottom:1px solid var(--border-primary)">
 <div style="display:flex;justify-content:space-between;margin-bottom:8px">
 <span>Avg Resolution Time:</span>
 </div>
-<div style="padding-left:20px;font-size:13px;color:#999;margin-bottom:4px">Auto: 0.2 days</div>
-<div style="padding-left:20px;font-size:13px;color:#999;margin-bottom:4px">Manual: 3.1 days</div>
-<div style="padding-left:20px;font-size:13px;font-weight:600;color:#4ade80">Overall: 2.4 days</div>
+<div style="padding-left:20px;font-size:13px;color:var(--text-secondary);margin-bottom:4px">Auto: 0.2 days</div>
+<div style="padding-left:20px;font-size:13px;color:var(--text-secondary);margin-bottom:4px">Manual: 3.1 days</div>
+<div style="padding-left:20px;font-size:13px;font-weight:600;color:var(--accent-green)">Overall: 2.4 days</div>
 </div>
 <div style="padding:12px 0">
 <div style="display:flex;justify-content:space-between;margin-bottom:4px">
 <span>Accuracy Rate:</span>
-<strong style="color:#4ade80">${d.accuracy}%</strong>
+<strong style="color:var(--accent-green)">${d.accuracy}%</strong>
 </div>
-<div style="font-size:13px;color:#999">0 reversals required</div>
+<div style="font-size:13px;color:var(--text-secondary)">0 reversals required</div>
 </div>
 </div>
 </div>
@@ -1752,15 +1803,15 @@ document.getElementById('content').innerHTML=`
 <div class="section-title">Automation Trend</div>
 </div>
 <div class="card">
-<div style="font-size:14px;color:#999;margin-bottom:20px">Automation rate improving through machine learning from human reviews</div>
+<div style="font-size:14px;color:var(--text-secondary);margin-bottom:20px">Automation rate improving through machine learning from human reviews</div>
 <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px">
 ${[60,65,68,72,75,78,82,85].map((rate,i)=>`
 <div style="text-align:center">
 <div style="height:100px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:8px">
-<div style="width:100%;background:#4ade80;height:${rate}%;border-radius:4px 4px 0 0"></div>
+<div style="width:100%;background:var(--accent-green);height:${rate}%;border-radius:4px 4px 0 0"></div>
 </div>
 <div style="font-size:12px;font-weight:600">${rate}%</div>
-<div style="font-size:11px;color:#666">Week ${i+1}</div>
+<div style="font-size:11px;color:var(--text-tertiary)">Week ${i+1}</div>
 </div>
 `).join('')}
 </div>
@@ -1776,19 +1827,19 @@ document.getElementById('content').innerHTML=`
 <div class="section">
 <div class="card">
 <div style="margin-bottom:24px">
-<div style="font-size:14px;font-weight:600;color:#999;margin-bottom:12px">MATCH STATUS</div>
+<div style="font-size:14px;font-weight:600;color:var(--text-secondary);margin-bottom:12px">MATCH STATUS</div>
 <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
-<div style="text-align:center;padding:20px;background:#0f0f0f;border-radius:8px">
-<div style="font-size:32px;font-weight:700;color:#4ade80;margin-bottom:8px">94%</div>
-<div style="font-size:13px;color:#999">Auto-Match Rate</div>
+<div style="text-align:center;padding:20px;background:var(--bg-tertiary);border-radius:8px">
+<div style="font-size:32px;font-weight:700;color:var(--accent-green);margin-bottom:8px">94%</div>
+<div style="font-size:13px;color:var(--text-secondary)">Auto-Match Rate</div>
 </div>
-<div style="text-align:center;padding:20px;background:#0f0f0f;border-radius:8px">
+<div style="text-align:center;padding:20px;background:var(--bg-tertiary);border-radius:8px">
 <div style="font-size:32px;font-weight:700;margin-bottom:8px">${d.totalExceptions-d.autoResolved}</div>
-<div style="font-size:13px;color:#999">Exceptions Remaining</div>
+<div style="font-size:13px;color:var(--text-secondary)">Exceptions Remaining</div>
 </div>
-<div style="text-align:center;padding:20px;background:#0f0f0f;border-radius:8px">
-<div style="font-size:32px;font-weight:700;color:#facc15;margin-bottom:8px">${curr}75K</div>
-<div style="font-size:13px;color:#999">Total Variance</div>
+<div style="text-align:center;padding:20px;background:var(--bg-tertiary);border-radius:8px">
+<div style="font-size:32px;font-weight:700;color:var(--accent-yellow);margin-bottom:8px">${curr}75K</div>
+<div style="font-size:13px;color:var(--text-secondary)">Total Variance</div>
 </div>
 </div>
 </div>
@@ -1918,18 +1969,18 @@ function renderFileUploads(){
 document.getElementById('page-title').textContent='Historical Import & Backup';
 document.getElementById('page-subtitle').textContent='Manual file uploads for historical data and API backup';
 document.getElementById('content').innerHTML=`
-<div class="card" style="background:#1a1a1a;border-color:#333;margin-bottom:24px">
+<div class="card" style="background:var(--bg-hover);border-color:var(--border-secondary);margin-bottom:24px">
 <div style="display:flex;align-items:start;gap:16px">
 <div style="font-size:32px">ℹ️</div>
 <div>
 <div style="font-size:16px;font-weight:600;margin-bottom:8px">When to use manual file uploads:</div>
-<div style="font-size:14px;color:#999;line-height:1.6">
-<strong style="color:#fff">1. Historical Data Import:</strong> Onboarding and need to reconcile past months before API connections were established.<br>
-<strong style="color:#fff">2. API Backup:</strong> If a PSP or bank API experiences downtime, upload settlement reports manually to continue reconciliation.<br>
-<strong style="color:#fff">3. Legacy Systems:</strong> Custom ERPs or banks without API support - upload CSV exports from your system.<br>
-<strong style="color:#fff">4. Additional Detail:</strong> Sometimes manual reports contain more detail than API endpoints (e.g., Klarna reserve breakdowns).
+<div style="font-size:14px;color:var(--text-secondary);line-height:1.6">
+<strong style="color:var(--text-primary)">1. Historical Data Import:</strong> Onboarding and need to reconcile past months before API connections were established.<br>
+<strong style="color:var(--text-primary)">2. API Backup:</strong> If a PSP or bank API experiences downtime, upload settlement reports manually to continue reconciliation.<br>
+<strong style="color:var(--text-primary)">3. Legacy Systems:</strong> Custom ERPs or banks without API support - upload CSV exports from your system.<br>
+<strong style="color:var(--text-primary)">4. Additional Detail:</strong> Sometimes manual reports contain more detail than API endpoints (e.g., Klarna reserve breakdowns).
 </div>
-<div style="margin-top:12px;padding:12px;background:#0f0f0f;border-radius:6px;font-size:13px;color:#facc15">
+<div style="margin-top:12px;padding:12px;background:var(--bg-tertiary);border-radius:6px;font-size:13px;color:var(--accent-yellow)">
 💡 <strong>Normal operation:</strong> All PSPs, banks, and ERP sync automatically via API. No manual uploads needed for day-to-day reconciliation.
 </div>
 </div>
@@ -1941,7 +1992,7 @@ document.getElementById('content').innerHTML=`
 <div style="text-align:center;padding:60px">
 <div style="font-size:48px;margin-bottom:16px">📁</div>
 <div style="font-size:18px;font-weight:600;margin-bottom:8px">Upload Historical Files</div>
-<div style="font-size:14px;color:#999;margin-bottom:24px">Bank statements (CSV, PDF, MT940) • PSP settlement reports (CSV, XLSX) • ERP exports</div>
+<div style="font-size:14px;color:var(--text-secondary);margin-bottom:24px">Bank statements (CSV, PDF, MT940) • PSP settlement reports (CSV, XLSX) • ERP exports</div>
 <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">Select Files</button>
 <input type="file" id="file-input" style="display:none" multiple accept=".csv,.xlsx,.pdf,.mt940" onchange="handleFileUpload(event)" />
 </div>
@@ -2001,17 +2052,17 @@ document.getElementById('content').innerHTML=`
 <div class="card" style="margin-top:32px">
 <div class="section-title" style="margin-bottom:16px">Supported File Formats</div>
 <div class="grid grid-3">
-<div style="padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="padding:16px;background:var(--bg-tertiary);border-radius:8px">
 <div style="font-weight:600;margin-bottom:8px">Bank Statements</div>
-<div style="font-size:13px;color:#999">CSV, PDF, MT940, CAMT.053</div>
+<div style="font-size:13px;color:var(--text-secondary)">CSV, PDF, MT940, CAMT.053</div>
 </div>
-<div style="padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="padding:16px;background:var(--bg-tertiary);border-radius:8px">
 <div style="font-weight:600;margin-bottom:8px">PSP Settlements</div>
-<div style="font-size:13px;color:#999">CSV, XLSX (Stripe, Klarna, PayPal, Adyen formats)</div>
+<div style="font-size:13px;color:var(--text-secondary)">CSV, XLSX (Stripe, Klarna, PayPal, Adyen formats)</div>
 </div>
-<div style="padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="padding:16px;background:var(--bg-tertiary);border-radius:8px">
 <div style="font-weight:600;margin-bottom:8px">ERP Exports</div>
-<div style="font-size:13px;color:#999">CSV, XLSX (NetSuite, Xero, QuickBooks)</div>
+<div style="font-size:13px;color:var(--text-secondary)">CSV, XLSX (NetSuite, Xero, QuickBooks)</div>
 </div>
 </div>
 </div>
@@ -2027,26 +2078,26 @@ document.getElementById('content').innerHTML=`
 <div style="padding:20px">
 <div style="font-size:18px;font-weight:600;margin-bottom:20px">Auto-Resolution Settings</div>
 <div style="display:grid;gap:20px">
-<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:var(--bg-tertiary);border-radius:8px">
 <div>
 <div style="font-weight:600;margin-bottom:4px">Maximum Auto-Resolve Amount</div>
-<div style="font-size:13px;color:#999">Transactions above this require manual approval</div>
+<div style="font-size:13px;color:var(--text-secondary)">Transactions above this require manual approval</div>
 </div>
-<input type="text" value="${curr}25,000" style="padding:8px 12px;background:#000;border:1px solid #333;border-radius:4px;color:#fff;width:120px" />
+<input type="text" value="${curr}25,000" style="padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:4px;color:var(--text-primary);width:120px" />
 </div>
-<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:var(--bg-tertiary);border-radius:8px">
 <div>
 <div style="font-weight:600;margin-bottom:4px">Variance Tolerance</div>
-<div style="font-size:13px;color:#999">Amount difference threshold for auto-matching</div>
+<div style="font-size:13px;color:var(--text-secondary)">Amount difference threshold for auto-matching</div>
 </div>
-<input type="text" value="${curr}0.50" style="padding:8px 12px;background:#000;border:1px solid #333;border-radius:4px;color:#fff;width:120px" />
+<input type="text" value="${curr}0.50" style="padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:4px;color:var(--text-primary);width:120px" />
 </div>
-<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:var(--bg-tertiary);border-radius:8px">
 <div>
 <div style="font-weight:600;margin-bottom:4px">Minimum Confidence Score</div>
-<div style="font-size:13px;color:#999">Matches below this require manual review</div>
+<div style="font-size:13px;color:var(--text-secondary)">Matches below this require manual review</div>
 </div>
-<input type="text" value="85%" style="padding:8px 12px;background:#000;border:1px solid#333;border-radius:4px;color:#fff;width:120px" />
+<input type="text" value="85%" style="padding:8px 12px;background:var(--bg-secondary);border:1px solid#333;border-radius:4px;color:var(--text-primary);width:120px" />
 </div>
 </div>
 <div style="margin-top:24px">
@@ -2125,7 +2176,7 @@ row.style.display=text.includes(searchTerm)?'':'none';
 function refreshFXRates(){
 const curr=currency[currentEntity];
 const refreshMsg=document.createElement('div');
-refreshMsg.style.cssText='position:fixed;top:20px;right:20px;background:#4ade80;color:#000;padding:12px 24px;border-radius:8px;font-weight:600;z-index:1000';
+refreshMsg.style.cssText='position:fixed;top:20px;right:20px;background:var(--accent-green);color:var(--bg-primary);padding:12px 24px;border-radius:8px;font-weight:600;z-index:1000';
 refreshMsg.textContent='FX rates updated ✓';
 document.body.appendChild(refreshMsg);
 setTimeout(()=>refreshMsg.remove(),2000);
@@ -2156,33 +2207,33 @@ const rates=fxRates[currentEntity];
 const pairs=Object.keys(rates);
 const modalContent=`
 <div class="modal-header">Edit Monthly FX Rates</div>
-<div style="background:#1a1a1a;border-radius:8px;padding:20px;margin-bottom:24px">
-<div style="font-size:14px;color:#999;margin-bottom:16px">
+<div style="background:var(--bg-hover);border-radius:8px;padding:20px;margin-bottom:24px">
+<div style="font-size:14px;color:var(--text-secondary);margin-bottom:16px">
 Set corporate monthly rates for reconciliation variance calculations.
 These rates will be used for the current month: ${new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'})}.
 </div>
-<div style="background:#0f0f0f;border-radius:6px;padding:12px;font-size:13px;color:#facc15">
+<div style="background:var(--bg-tertiary);border-radius:6px;padding:12px;font-size:13px;color:var(--accent-yellow)">
 ⚠️ <strong>Permission Required:</strong> Only Finance Managers and Treasury Analysts can update FX rates.
 </div>
 </div>
 
 <div style="display:grid;gap:16px;margin:24px 0">
 ${pairs.map(pair=>`
-<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:var(--bg-tertiary);border-radius:8px">
 <div>
 <div style="font-weight:600;margin-bottom:4px">${pair}</div>
-<div style="font-size:13px;color:#999">Current: ${rates[pair].rate.toFixed(4)}</div>
+<div style="font-size:13px;color:var(--text-secondary)">Current: ${rates[pair].rate.toFixed(4)}</div>
 </div>
 <input type="number" step="0.0001" value="${rates[pair].rate.toFixed(4)}" 
-style="padding:8px 12px;background:#000;border:1px solid #333;border-radius:4px;color:#fff;width:120px;text-align:right"
+style="padding:8px 12px;background:var(--bg-secondary);border:1px solid var(--border-secondary);border-radius:4px;color:var(--text-primary);width:120px;text-align:right"
 id="rate-${pair.replace('/','')}" />
 </div>
 `).join('')}
 </div>
 
-<div style="background:#0f0f0f;border-radius:8px;padding:16px;margin:24px 0">
+<div style="background:var(--bg-tertiary);border-radius:8px;padding:16px;margin:24px 0">
 <div style="font-weight:600;margin-bottom:8px">Audit Trail</div>
-<div style="font-size:13px;color:#999">
+<div style="font-size:13px;color:var(--text-secondary)">
 Last updated: ${new Date(Date.now()-5*24*60*60*1000).toLocaleDateString('en-GB')} by Alex Morgan<br>
 Previous update: ${new Date(Date.now()-35*24*60*60*1000).toLocaleDateString('en-GB')} by Sarah Chen
 </div>
@@ -2245,12 +2296,12 @@ function showResolutionDetail(txId){
 const curr=currency[currentEntity];
 document.getElementById('modal-content').innerHTML=`
 <div class="modal-header">Auto-Resolution Details - ${txId}</div>
-<div style="background:#1a1a1a;border-radius:8px;padding:20px;margin-bottom:24px">
+<div style="background:var(--bg-hover);border-radius:8px;padding:20px;margin-bottom:24px">
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
 <div style="font-size:32px">✅</div>
 <div>
 <div style="font-size:20px;font-weight:600">Auto-Resolved on ${new Date().toLocaleDateString('en-GB')}</div>
-<div style="font-size:14px;color:#999">Confidence Score: <span class="confidence-high" style="font-weight:600">99.2%</span></div>
+<div style="font-size:14px;color:var(--text-secondary)">Confidence Score: <span class="confidence-high" style="font-weight:600">99.2%</span></div>
 </div>
 </div>
 </div>
@@ -2280,25 +2331,25 @@ document.getElementById('modal-content').innerHTML=`
 <div class="detail-title">Bank Record</div>
 <div class="detail-row">
 <span class="detail-label">Amount</span>
-<span class="detail-value" style="color:#4ade80">${curr}5,234.56 ✓</span>
+<span class="detail-value" style="color:var(--accent-green)">${curr}5,234.56 ✓</span>
 </div>
 <div class="detail-row">
 <span class="detail-label">Date</span>
-<span class="detail-value" style="color:#4ade80">${new Date().toLocaleDateString('en-GB')} ✓ T+2</span>
+<span class="detail-value" style="color:var(--accent-green)">${new Date().toLocaleDateString('en-GB')} ✓ T+2</span>
 </div>
 <div class="detail-row">
 <span class="detail-label">Reference</span>
-<span class="detail-value" style="color:#4ade80">STR12345 ✓ 85%</span>
+<span class="detail-value" style="color:var(--accent-green)">STR12345 ✓ 85%</span>
 </div>
 <div class="detail-row">
 <span class="detail-label">Account</span>
-<span class="detail-value" style="color:#4ade80">Stripe Settlement ✓</span>
+<span class="detail-value" style="color:var(--accent-green)">Stripe Settlement ✓</span>
 </div>
 </div>
 </div>
 
 <div class="score-breakdown">
-<div style="font-weight:600;margin-bottom:16px;color:#999">MATCH SCORE BREAKDOWN</div>
+<div style="font-weight:600;margin-bottom:16px;color:var(--text-secondary)">MATCH SCORE BREAKDOWN</div>
 <div class="score-item">
 <span>Amount match</span>
 <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
@@ -2319,19 +2370,19 @@ document.getElementById('modal-content').innerHTML=`
 <div class="score-bar"><div class="score-fill" style="width:100%"></div></div>
 <span style="font-weight:600">100% (+10pts)</span>
 </div>
-<div style="text-align:center;padding:16px;background:#0f0f0f;border-radius:8px;margin-top:16px">
-<div style="font-size:32px;font-weight:700;color:#4ade80">99.2%</div>
-<div style="font-size:14px;color:#999">Total Confidence Score</div>
+<div style="text-align:center;padding:16px;background:var(--bg-tertiary);border-radius:8px;margin-top:16px">
+<div style="font-size:32px;font-weight:700;color:var(--accent-green)">99.2%</div>
+<div style="font-size:14px;color:var(--text-secondary)">Total Confidence Score</div>
 </div>
 </div>
 
-<div style="background:#0f0f0f;border-radius:8px;padding:20px;margin:24px 0">
-<div style="font-weight:600;margin-bottom:4px">Rule Applied: <span style="color:#4ade80">Rule 1 (Exact Match)</span></div>
-<div style="font-weight:600;color:#999">Auto-Resolution Tier: <span style="color:#fff">Tier 1 (Silent)</span></div>
+<div style="background:var(--bg-tertiary);border-radius:8px;padding:20px;margin:24px 0">
+<div style="font-weight:600;margin-bottom:4px">Rule Applied: <span style="color:var(--accent-green)">Rule 1 (Exact Match)</span></div>
+<div style="font-weight:600;color:var(--text-secondary)">Auto-Resolution Tier: <span style="color:var(--text-primary)">Tier 1 (Silent)</span></div>
 </div>
 
 <div class="audit-trail">
-<div style="font-weight:600;margin-bottom:16px;color:#999">AUDIT TRAIL</div>
+<div style="font-weight:600;margin-bottom:16px;color:var(--text-secondary)">AUDIT TRAIL</div>
 <div class="audit-item">
 <div class="audit-time">${new Date(Date.now()-2*24*60*60*1000).toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
 <div class="audit-event">PSP record received</div>
@@ -2350,7 +2401,7 @@ document.getElementById('modal-content').innerHTML=`
 </div>
 <div class="audit-item">
 <div class="audit-time">${new Date().toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
-<div class="audit-event" style="color:#4ade80;font-weight:600">Auto-resolved (Tier 1 - Silent)</div>
+<div class="audit-event" style="color:var(--accent-green);font-weight:600">Auto-resolved (Tier 1 - Silent)</div>
 </div>
 </div>
 
