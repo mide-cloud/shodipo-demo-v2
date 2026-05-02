@@ -2289,7 +2289,157 @@ alert(`Files uploaded:\n\n${files.map(f=>f.name).join('\n')}\n\nProcessing start
 }
 
 function showAddConnection(){
-alert('Add New Connection\n\nAvailable integrations:\n\n• Xero (Accounting)\n• QuickBooks (Accounting)\n• HSBC (Bank via Open Banking)\n• Barclays (Bank via Open Banking)\n• Sage (Accounting)\n• More coming soon\n\nSelect a system to begin OAuth authorization flow.');
+document.getElementById('modal-content').innerHTML=`
+<div class="modal-header">Add New Connection</div>
+
+<div style="margin-bottom:24px">
+<p style="color:var(--text-secondary);font-size:14px;line-height:1.6">
+Connect additional PSPs, banks, or accounting systems to auto-sync transaction data. All connections use secure OAuth 2.0 authorization.
+</p>
+</div>
+
+<div style="margin-bottom:32px">
+<div style="font-size:16px;font-weight:600;margin-bottom:16px">Available Integrations</div>
+
+<div style="display:grid;gap:12px">
+<div class="connection-card" onclick="connectIntegration('Xero')" style="cursor:pointer;padding:16px">
+<div class="connection-header" style="margin:0">
+<div class="connection-icon" style="background:#13B5EA;width:40px;height:40px;font-size:20px">
+<div style="color:white;font-weight:700">X</div>
+</div>
+<div class="connection-info" style="flex:1">
+<div class="connection-name" style="font-size:16px">Xero</div>
+<div class="connection-type">Accounting • Auto-sync revenue & invoices</div>
+</div>
+<div style="color:var(--text-secondary);font-size:24px">→</div>
+</div>
+</div>
+
+<div class="connection-card" onclick="connectIntegration('QuickBooks')" style="cursor:pointer;padding:16px">
+<div class="connection-header" style="margin:0">
+<div class="connection-icon" style="background:#2CA01C;width:40px;height:40px;font-size:20px">
+<div style="color:white;font-weight:700">QB</div>
+</div>
+<div class="connection-info" style="flex:1">
+<div class="connection-name" style="font-size:16px">QuickBooks</div>
+<div class="connection-type">Accounting • Auto-sync revenue & invoices</div>
+</div>
+<div style="color:var(--text-secondary);font-size:24px">→</div>
+</div>
+</div>
+
+<div class="connection-card" onclick="connectIntegration('HSBC')" style="cursor:pointer;padding:16px">
+<div class="connection-header" style="margin:0">
+<div class="connection-icon" style="background:#DB0011;width:40px;height:40px;font-size:16px">
+<div style="color:white;font-weight:700">HSBC</div>
+</div>
+<div class="connection-info" style="flex:1">
+<div class="connection-name" style="font-size:16px">HSBC</div>
+<div class="connection-type">Bank • Connect via Open Banking (TrueLayer)</div>
+</div>
+<div style="color:var(--text-secondary);font-size:24px">→</div>
+</div>
+</div>
+
+<div class="connection-card" onclick="connectIntegration('Barclays')" style="cursor:pointer;padding:16px">
+<div class="connection-header" style="margin:0">
+<div class="connection-icon" style="background:#00AEEF;width:40px;height:40px;font-size:16px">
+<div style="color:white;font-weight:700">B</div>
+</div>
+<div class="connection-info" style="flex:1">
+<div class="connection-name" style="font-size:16px">Barclays</div>
+<div class="connection-type">Bank • Connect via Open Banking (TrueLayer)</div>
+</div>
+<div style="color:var(--text-secondary);font-size:24px">→</div>
+</div>
+</div>
+
+<div class="connection-card" onclick="connectIntegration('Sage')" style="cursor:pointer;padding:16px">
+<div class="connection-header" style="margin:0">
+<div class="connection-icon" style="background:#00DC06;width:40px;height:40px;font-size:20px">
+<div style="color:white;font-weight:700">S</div>
+</div>
+<div class="connection-info" style="flex:1">
+<div class="connection-name" style="font-size:16px">Sage</div>
+<div class="connection-type">Accounting • Auto-sync revenue & invoices</div>
+</div>
+<div style="color:var(--text-secondary);font-size:24px">→</div>
+</div>
+</div>
+</div>
+</div>
+
+<div style="background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:8px;padding:16px;margin-bottom:24px">
+<div style="font-size:13px;color:var(--text-secondary);line-height:1.6">
+<strong style="color:var(--text-primary)">🔒 Secure OAuth 2.0:</strong> You'll be redirected to the provider's login page. Shodipo never sees your credentials. You can revoke access anytime.
+</div>
+</div>
+
+<div style="display:flex;gap:12px">
+<button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+</div>
+`;
+document.getElementById('resolution-modal').classList.add('active');
+}
+
+function connectIntegration(provider){
+closeModal();
+setTimeout(()=>{
+document.getElementById('modal-content').innerHTML=`
+<div class="modal-header">Connecting to ${provider}</div>
+
+<div style="text-align:center;padding:40px 20px">
+<div style="font-size:64px;margin-bottom:24px">🔐</div>
+<div style="font-size:18px;font-weight:600;margin-bottom:12px">OAuth Authorization Flow</div>
+<div style="font-size:14px;color:var(--text-secondary);margin-bottom:32px;line-height:1.6">
+In production, you would be redirected to ${provider}'s login page to authorize Shodipo to access your data.
+</div>
+
+<div style="background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:8px;padding:24px;text-align:left;margin-bottom:32px">
+<div style="font-size:14px;font-weight:600;margin-bottom:16px">Authorization Flow:</div>
+<div style="display:grid;gap:12px">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:32px;height:32px;background:var(--accent-green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--bg-primary);font-weight:700;font-size:14px">1</div>
+<div style="font-size:14px">Redirect to ${provider} login page</div>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:32px;height:32px;background:var(--accent-green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--bg-primary);font-weight:700;font-size:14px">2</div>
+<div style="font-size:14px">You authorize Shodipo (read-only access)</div>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:32px;height:32px;background:var(--accent-green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--bg-primary);font-weight:700;font-size:14px">3</div>
+<div style="font-size:14px">Access token generated (encrypted)</div>
+</div>
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:32px;height:32px;background:var(--accent-green);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--bg-primary);font-weight:700;font-size:14px">4</div>
+<div style="font-size:14px">Auto-sync begins (daily at 6:00 AM)</div>
+</div>
+</div>
+</div>
+
+<div style="padding:16px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;margin-bottom:32px">
+<div style="font-size:14px;color:var(--accent-green);text-align:center">
+✓ This is a demo - in production, you'd be redirected to ${provider} now
+</div>
+</div>
+</div>
+
+<div style="display:flex;gap:12px">
+<button class="btn btn-secondary" onclick="closeModal()">Close</button>
+<button class="btn btn-primary" onclick="simulateConnection('${provider}')">Simulate Connection</button>
+</div>
+`;
+document.getElementById('resolution-modal').classList.add('active');
+},300);
+}
+
+function simulateConnection(provider){
+closeModal();
+const successMsg=document.createElement('div');
+successMsg.style.cssText='position:fixed;top:20px;right:20px;background:var(--accent-green);color:var(--bg-primary);padding:16px 24px;border-radius:8px;font-weight:600;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3)';
+successMsg.innerHTML=`✓ ${provider} connected successfully!<br><span style="font-size:12px;font-weight:normal;opacity:0.9">Auto-sync will begin at 6:00 AM daily</span>`;
+document.body.appendChild(successMsg);
+setTimeout(()=>successMsg.remove(),4000);
 }
 
 function showResolutionDetail(txId){
