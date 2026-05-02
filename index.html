@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shodipo Treasury - Complete Auto-Resolution Demo</title>
+<title>Shodipo Treasury Platform</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0a;color:#fff;display:flex;height:100vh;overflow:hidden}
@@ -22,9 +22,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .header{padding:20px 32px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center}
 .header-left h1{font-size:24px;margin-bottom:4px}
 .header-left p{font-size:14px;color:#999}
-.header-right{display:flex;gap:12px}
-.entity-selector{padding:8px 16px;background:#1a1a1a;border:1px solid #333;border-radius:6px;color:#fff;cursor:pointer;font-size:14px}
-.export-btn{padding:8px 20px;background:#fff;color:#000;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px}
+.header-right{display:flex;gap:12px;align-items:center}
+.entity-selector{padding:8px 16px;background:#1a1a1a;border:1px solid #333;border-radius:6px;color:#fff;cursor:pointer;font-size:14px;transition:all 0.2s}
+.entity-selector:hover{border-color:#555}
+.export-btn{padding:8px 20px;background:#fff;color:#000;border:none;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.2s}
+.export-btn:hover{background:#f0f0f0}
 .content{flex:1;overflow-y:auto;padding:32px}
 .banner{background:linear-gradient(135deg,#1a1a1a 0%,#0a0a0a 100%);border:1px solid #333;border-radius:12px;padding:24px;margin-bottom:32px}
 .banner-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
@@ -37,8 +39,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .banner-actions{display:flex;gap:12px;margin-top:20px}
 .btn{padding:10px 20px;border-radius:6px;border:none;cursor:pointer;font-weight:600;font-size:14px;transition:all 0.2s}
 .btn-primary{background:#fff;color:#000}
+.btn-primary:hover{background:#f0f0f0;transform:translateY(-1px)}
 .btn-secondary{background:transparent;color:#fff;border:1px solid #444}
-.btn:hover{transform:translateY(-1px)}
+.btn-secondary:hover{border-color:#666;background:#1a1a1a}
+.btn-small{padding:6px 16px;font-size:12px}
 .section{margin-bottom:32px}
 .section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
 .section-title{font-size:18px;font-weight:600}
@@ -49,7 +53,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .grid-3{grid-template-columns:repeat(3,1fr)}
 .grid-4{grid-template-columns:repeat(4,1fr)}
 .aging-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
-.aging-card{border-radius:12px;padding:24px;text-align:center;border:2px solid}
+.aging-card{border-radius:12px;padding:24px;text-align:center;border:2px solid;transition:all 0.2s;cursor:pointer}
+.aging-card:hover{transform:translateY(-2px)}
 .aging-card.green{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.3)}
 .aging-card.yellow{background:rgba(250,204,21,0.1);border-color:rgba(250,204,21,0.3)}
 .aging-card.orange{background:rgba(251,146,60,0.1);border-color:rgba(251,146,60,0.3)}
@@ -58,7 +63,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 .aging-label{font-size:14px;color:#999;margin-bottom:4px}
 .aging-days{font-size:12px;color:#666;font-weight:600}
 table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:12px;border-bottom:1px solid #222;font-size:13px;color:#999;font-weight:600}
+th{text-align:left;padding:12px;border-bottom:1px solid #222;font-size:13px;color:#999;font-weight:600;cursor:pointer;user-select:none;position:relative}
+th:hover{color:#fff;background:#1a1a1a}
+th.sortable::after{content:'⇅';margin-left:6px;opacity:0.3}
+th.sort-asc::after{content:'↑';opacity:1}
+th.sort-desc::after{content:'↓';opacity:1}
 td{padding:14px 12px;border-bottom:1px solid #1a1a1a;font-size:14px}
 tr:hover{background:#0f0f0f}
 .status-badge{padding:4px 10px;border-radius:12px;font-size:12px;font-weight:600;display:inline-block}
@@ -67,20 +76,27 @@ tr:hover{background:#0f0f0f}
 .status-missing{background:rgba(248,113,113,0.2);color:#f87171}
 .status-auto{background:rgba(96,165,250,0.2);color:#60a5fa}
 .status-review{background:rgba(250,204,21,0.2);color:#facc15}
-.confidence-high{color:#4ade80}
-.confidence-medium{color:#facc15}
-.confidence-low{color:#fb923c}
+.confidence-high{color:#4ade80;font-weight:600}
+.confidence-medium{color:#facc15;font-weight:600}
+.confidence-low{color:#fb923c;font-weight:600}
 .fx-widget{background:#0f0f0f;border:1px solid #222;border-radius:8px;padding:16px}
 .fx-pair{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #1a1a1a}
 .fx-pair:last-child{border:none}
 .fx-rate{font-weight:600;font-size:16px}
-.psp-table{margin-top:16px}
+.fx-change{font-size:12px;margin-left:8px}
+.fx-change.up{color:#4ade80}
+.fx-change.down{color:#f87171}
 .clickable{cursor:pointer;transition:all 0.2s}
 .clickable:hover{background:#1a1a1a}
+.search-box{padding:10px 16px;background:#0f0f0f;border:1px solid #222;border-radius:6px;color:#fff;font-size:14px;width:100%;margin-bottom:16px;transition:all 0.2s}
+.search-box:focus{outline:none;border-color:#444;background:#1a1a1a}
+.search-box::placeholder{color:#666}
+.filter-bar{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;z-index:1000}
 .modal.active{display:flex}
 .modal-content{background:#0a0a0a;border:1px solid #333;border-radius:12px;max-width:800px;max-height:90vh;overflow-y:auto;padding:32px;position:relative}
-.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:#999;font-size:24px;cursor:pointer;padding:8px}
+.modal-close{position:absolute;top:16px;right:16px;background:none;border:none;color:#999;font-size:24px;cursor:pointer;padding:8px;transition:color 0.2s}
+.modal-close:hover{color:#fff}
 .modal-header{font-size:24px;font-weight:600;margin-bottom:24px}
 .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin:24px 0}
 .detail-section{background:#0f0f0f;border:1px solid #222;border-radius:8px;padding:20px}
@@ -92,16 +108,18 @@ tr:hover{background:#0f0f0f}
 .score-breakdown{margin:24px 0}
 .score-item{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#0f0f0f;border-radius:6px;margin-bottom:8px}
 .score-bar{flex:1;height:8px;background:#222;border-radius:4px;margin:0 16px;overflow:hidden}
-.score-fill{height:100%;background:#4ade80;border-radius:4px}
+.score-fill{height:100%;background:#4ade80;border-radius:4px;transition:width 0.3s}
 .audit-trail{margin:24px 0}
 .audit-item{display:flex;gap:16px;padding:12px;border-left:2px solid #333;margin-left:8px}
 .audit-time{color:#999;font-size:13px;min-width:120px}
 .audit-event{font-size:14px}
-.rule-card{background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:24px;margin-bottom:16px}
+.rule-card{background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:24px;margin-bottom:16px;transition:all 0.2s}
+.rule-card:hover{border-color:#333}
 .rule-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:16px}
 .rule-title{font-size:18px;font-weight:600;margin-bottom:4px}
 .rule-confidence{font-size:14px;color:#4ade80}
-.rule-toggle{background:#4ade80;color:#000;padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600}
+.rule-toggle{background:#4ade80;color:#000;padding:6px 16px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.rule-toggle:hover{background:#5be89b}
 .rule-criteria{background:#000;border-radius:8px;padding:16px;margin:12px 0}
 .criterion{display:flex;align-items:center;gap:8px;margin:8px 0;font-size:14px}
 .criterion::before{content:"•";color:#4ade80;font-weight:700;font-size:20px}
@@ -128,7 +146,34 @@ tr:hover{background:#0f0f0f}
 .metric-value{font-size:36px;font-weight:700;margin-bottom:8px}
 .metric-label{font-size:13px;color:#999}
 .metric-trend{font-size:12px;color:#4ade80;margin-top:4px}
-.search-box{padding:10px 16px;background:#0f0f0f;border:1px solid #222;border-radius:6px;color:#fff;font-size:14px;width:300px;margin-bottom:16px}
+.loading{display:none;text-align:center;padding:40px;color:#999}
+.loading.active{display:block}
+.tooltip{position:relative;cursor:help}
+.tooltip:hover::after{content:attr(data-tooltip);position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:#1a1a1a;border:1px solid #333;padding:8px 12px;border-radius:6px;font-size:12px;white-space:nowrap;z-index:100;margin-bottom:8px}
+.empty-state{text-align:center;padding:60px 20px;color:#666}
+.empty-state-icon{font-size:48px;margin-bottom:16px;opacity:0.5}
+.empty-state-text{font-size:16px;margin-bottom:8px}
+.empty-state-subtext{font-size:14px;opacity:0.7}
+.connection-card{background:#0f0f0f;border:1px solid #222;border-radius:12px;padding:24px;transition:all 0.2s}
+.connection-card:hover{border-color:#333;background:#1a1a1a}
+.connection-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.connection-icon{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.connection-info{flex:1}
+.connection-name{font-size:18px;font-weight:600;margin-bottom:4px}
+.connection-type{font-size:13px;color:#999}
+.connection-status{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600}
+.status-connected{background:rgba(74,222,128,0.2);color:#4ade80}
+.status-syncing{background:rgba(96,165,250,0.2);color:#60a5fa}
+.status-error{background:rgba(248,113,113,0.2);color:#f87171}
+.status-disconnected{background:rgba(156,163,175,0.2);color:#9ca3af}
+.connection-details{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding-top:16px;border-top:1px solid #222}
+.connection-detail{display:flex;flex-direction:column}
+.detail-label{font-size:12px;color:#999;margin-bottom:4px}
+.detail-value{font-size:14px;font-weight:600}
+.sync-indicator{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:#0f0f0f;border:1px solid #222;border-radius:6px;font-size:12px;color:#999}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#4ade80}
+.sync-dot.syncing{animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 </style>
 </head>
 <body>
@@ -142,17 +187,22 @@ tr:hover{background:#0f0f0f}
 <div class="nav-section">
 <div class="nav-label">Core</div>
 <div class="nav-item active" onclick="showPage('dashboard')">Dashboard</div>
+<div class="nav-item" onclick="showPage('connections')">
+Connections
+<span class="nav-badge" style="background:#4ade80;color:#000">6</span>
+</div>
 <div class="nav-item" onclick="showPage('exception-queue')">
 Exception Queue
-<span class="nav-badge">47</span>
+<span class="nav-badge" id="exception-count">47</span>
 </div>
 <div class="nav-item" onclick="showPage('auto-resolution')">Auto-Resolution</div>
 <div class="nav-item" onclick="showPage('rules-engine')">Matching Rules</div>
-<div class="nav-item" onclick="showPage('review-queue')">Review Queue
-<span class="nav-badge">12</span>
+<div class="nav-item" onclick="showPage('review-queue')">
+Review Queue
+<span class="nav-badge" id="review-count">12</span>
 </div>
 <div class="nav-item" onclick="showPage('three-way')">Three-Way Match</div>
-<div class="nav-item" onclick="showPage('file-uploads')">File Uploads</div>
+<div class="nav-item" onclick="showPage('file-uploads')">Historical Import</div>
 </div>
 <div class="nav-section">
 <div class="nav-label">Analytics</div>
@@ -184,17 +234,20 @@ Exception Queue
 <p id="page-subtitle">Real-time treasury reconciliation & exception management</p>
 </div>
 <div class="header-right">
-<select class="entity-selector" onchange="switchEntity(this.value)">
+<select class="entity-selector" onchange="switchEntity(this.value)" id="entity-dropdown">
 <option value="all">All Entities (Consolidated)</option>
 <option value="uk">UK Operations</option>
 <option value="eu">EU Operations</option>
 <option value="us">US Operations</option>
 </select>
-<button class="export-btn">Export</button>
+<button class="export-btn" onclick="exportData()">Export</button>
 </div>
 </div>
 <div class="content" id="content">
-<!-- Content loads here -->
+<div class="loading active">
+<div style="font-size:48px;margin-bottom:16px">⏳</div>
+<div>Loading treasury data...</div>
+</div>
 </div>
 </div>
 
@@ -202,17 +255,47 @@ Exception Queue
 <div class="modal" id="resolution-modal">
 <div class="modal-content">
 <button class="modal-close" onclick="closeModal()">&times;</button>
-<div id="modal-content">
-<!-- Modal content loads here -->
-</div>
+<div id="modal-content"></div>
 </div>
 </div>
 
 <script>
+// Global state
 let currentEntity = 'all';
 let currentPage = 'dashboard';
+let searchTerm = '';
+let sortColumn = '';
+let sortDirection = 'asc';
+
+// Currency symbols
 const currency = {all:'€',uk:'£',eu:'€',us:'$'};
 
+// FX Rates (Monthly corporate rates set by finance team)
+const fxRates = {
+all:{
+'GBP/USD':{rate:1.2845},
+'GBP/EUR':{rate:1.1623},
+'USD/EUR':{rate:0.9049},
+'EUR/USD':{rate:1.1051}
+},
+uk:{
+'GBP/USD':{rate:1.2845},
+'GBP/EUR':{rate:1.1623},
+'EUR/GBP':{rate:0.8604}
+},
+eu:{
+'EUR/USD':{rate:1.1051},
+'EUR/GBP':{rate:0.8604},
+'USD/EUR':{rate:0.9049}
+},
+us:{
+'USD/EUR':{rate:0.9049},
+'USD/GBP':{rate:0.7785},
+'EUR/USD':{rate:1.1051}
+}
+};
+
+// Entity-specific data
 const data = {
 all:{
 autoResolved:198,
@@ -225,12 +308,24 @@ timeSaved:297,
 costSaved:14850,
 automationRate:85,
 pspBreakdown:[
-{psp:'Stripe',expected:'€2.84M',received:'€2.82M',variance:'-€20K',status:'Variance'},
-{psp:'Klarna',expected:'€2.15M',received:'€2.10M',variance:'-€50K',status:'Variance'},
-{psp:'PayPal',expected:'€1.92M',received:'€1.92M',variance:'€0',status:'Matched'},
-{psp:'Adyen',expected:'€1.85M',received:'€1.85M',variance:'€0',status:'Matched'}
+{psp:'Stripe',expected:'€2.84M',received:'€2.82M',variance:'-€20K',status:'Variance',amount:2820000},
+{psp:'Klarna',expected:'€2.15M',received:'€2.10M',variance:'-€50K',status:'Variance',amount:2100000},
+{psp:'PayPal',expected:'€1.92M',received:'€1.92M',variance:'€0',status:'Matched',amount:1920000},
+{psp:'Adyen',expected:'€1.85M',received:'€1.85M',variance:'€0',status:'Matched',amount:1850000}
 ],
-agingData:{onTrack:28,watch:14,aging:5,breached:0}
+agingData:{onTrack:28,watch:14,aging:5,breached:0},
+transactions:[
+{id:'TX-001',amount:5000,psp:'Stripe',age:2,confidence:78,status:'Open',action:'Manual Review'},
+{id:'TX-002',amount:2300,psp:'Klarna',age:1,confidence:92,status:'Queued',action:'Auto T+1'},
+{id:'TX-003',amount:1200,psp:'PayPal',age:0,confidence:99,status:'Auto-Resolved',action:'Complete'},
+{id:'TX-004',amount:8750,psp:'Adyen',age:3,confidence:72,status:'Open',action:'Manual Review'},
+{id:'TX-005',amount:3450,psp:'Stripe',age:1,confidence:96,status:'Auto-Resolved',action:'Complete'},
+{id:'TX-006',amount:12500,psp:'Klarna',age:4,confidence:68,status:'Open',action:'Manual Review'},
+{id:'TX-007',amount:4200,psp:'PayPal',age:0,confidence:99,status:'Auto-Resolved',action:'Complete'},
+{id:'TX-008',amount:6800,psp:'Stripe',age:2,confidence:89,status:'Queued',action:'Auto T+2'},
+{id:'TX-009',amount:15000,psp:'Adyen',age:5,confidence:65,status:'Open',action:'Manual Review'},
+{id:'TX-010',amount:2100,psp:'Klarna',age:1,confidence:94,status:'Auto-Resolved',action:'Complete'}
+]
 },
 uk:{
 autoResolved:82,
@@ -243,12 +338,19 @@ timeSaved:123,
 costSaved:6150,
 automationRate:85,
 pspBreakdown:[
-{psp:'Stripe',expected:'£1.24M',received:'£1.23M',variance:'-£10K',status:'Variance'},
-{psp:'Klarna',expected:'£945K',received:'£930K',variance:'-£15K',status:'Variance'},
-{psp:'PayPal',expected:'£856K',received:'£856K',variance:'£0',status:'Matched'},
-{psp:'Adyen',expected:'£823K',received:'£823K',variance:'£0',status:'Matched'}
+{psp:'Stripe',expected:'£1.24M',received:'£1.23M',variance:'-£10K',status:'Variance',amount:1230000},
+{psp:'Klarna',expected:'£945K',received:'£930K',variance:'-£15K',status:'Variance',amount:930000},
+{psp:'PayPal',expected:'£856K',received:'£856K',variance:'£0',status:'Matched',amount:856000},
+{psp:'Adyen',expected:'£823K',received:'£823K',variance:'£0',status:'Matched',amount:823000}
 ],
-agingData:{onTrack:12,watch:6,aging:2,breached:0}
+agingData:{onTrack:12,watch:6,aging:2,breached:0},
+transactions:[
+{id:'TX-UK-001',amount:2200,psp:'Stripe',age:1,confidence:88,status:'Queued',action:'Auto T+2'},
+{id:'TX-UK-002',amount:1500,psp:'Klarna',age:2,confidence:75,status:'Open',action:'Manual Review'},
+{id:'TX-UK-003',amount:3400,psp:'PayPal',age:0,confidence:99,status:'Auto-Resolved',action:'Complete'},
+{id:'TX-UK-004',amount:5200,psp:'Adyen',age:3,confidence:70,status:'Open',action:'Manual Review'},
+{id:'TX-UK-005',amount:1800,psp:'Stripe',age:1,confidence:95,status:'Auto-Resolved',action:'Complete'}
+]
 },
 eu:{
 autoResolved:68,
@@ -261,12 +363,18 @@ timeSaved:102,
 costSaved:5100,
 automationRate:85,
 pspBreakdown:[
-{psp:'Stripe',expected:'€1.08M',received:'€1.07M',variance:'-€8K',status:'Variance'},
-{psp:'Klarna',expected:'€820K',received:'€810K',variance:'-€10K',status:'Variance'},
-{psp:'PayPal',expected:'€745K',received:'€745K',variance:'€0',status:'Matched'},
-{psp:'Adyen',expected:'€692K',received:'€692K',variance:'€0',status:'Matched'}
+{psp:'Stripe',expected:'€1.08M',received:'€1.07M',variance:'-€8K',status:'Variance',amount:1070000},
+{psp:'Klarna',expected:'€820K',received:'€810K',variance:'-€10K',status:'Variance',amount:810000},
+{psp:'PayPal',expected:'€745K',received:'€745K',variance:'€0',status:'Matched',amount:745000},
+{psp:'Adyen',expected:'€692K',received:'€692K',variance:'€0',status:'Matched',amount:692000}
 ],
-agingData:{onTrack:10,watch:5,aging:2,breached:0}
+agingData:{onTrack:10,watch:5,aging:2,breached:0},
+transactions:[
+{id:'TX-EU-001',amount:1900,psp:'Stripe',age:2,confidence:82,status:'Queued',action:'Auto T+2'},
+{id:'TX-EU-002',amount:3200,psp:'Klarna',age:1,confidence:91,status:'Auto-Resolved',action:'Complete'},
+{id:'TX-EU-003',amount:2500,psp:'PayPal',age:0,confidence:99,status:'Auto-Resolved',action:'Complete'},
+{id:'TX-EU-004',amount:4800,psp:'Adyen',age:4,confidence:68,status:'Open',action:'Manual Review'}
+]
 },
 us:{
 autoResolved:48,
@@ -279,40 +387,411 @@ timeSaved:72,
 costSaved:3600,
 automationRate:84,
 pspBreakdown:[
-{psp:'Stripe',expected:'$620K',received:'$615K',variance:'-$5K',status:'Variance'},
-{psp:'Klarna',expected:'$485K',received:'$478K',variance:'-$7K',status:'Variance'},
-{psp:'PayPal',expected:'$425K',received:'$425K',variance:'$0',status:'Matched'},
-{psp:'Adyen',expected:'$398K',received:'$398K',variance:'$0',status:'Matched'}
+{psp:'Stripe',expected:'$620K',received:'$615K',variance:'-$5K',status:'Variance',amount:615000},
+{psp:'Klarna',expected:'$485K',received:'$478K',variance:'-$7K',status:'Variance',amount:478000},
+{psp:'PayPal',expected:'$425K',received:'$425K',variance:'$0',status:'Matched',amount:425000},
+{psp:'Adyen',expected:'$398K',received:'$398K',variance:'$0',status:'Matched',amount:398000}
 ],
-agingData:{onTrack:6,watch:3,aging:1,breached:0}
+agingData:{onTrack:6,watch:3,aging:1,breached:0},
+transactions:[
+{id:'TX-US-001',amount:1600,psp:'Stripe',age:1,confidence:90,status:'Auto-Resolved',action:'Complete'},
+{id:'TX-US-002',amount:2800,psp:'Klarna',age:3,confidence:72,status:'Open',action:'Manual Review'},
+{id:'TX-US-003',amount:1400,psp:'PayPal',age:0,confidence:99,status:'Auto-Resolved',action:'Complete'}
+]
 }
 };
 
+// Initialize
+setTimeout(()=>{
+document.querySelector('.loading').classList.remove('active');
+showPage('dashboard');
+},500);
+
 function switchEntity(entity){
 currentEntity=entity;
+document.getElementById('entity-dropdown').value=entity;
 showPage(currentPage);
 }
 
 function showPage(page){
 currentPage=page;
+searchTerm='';
+sortColumn='';
+sortDirection='asc';
+
+// Update nav highlighting
 document.querySelectorAll('.nav-item').forEach(item=>{
 item.classList.remove('active');
 const itemPage=item.getAttribute('onclick')?.match(/showPage\('([^']+)'\)/)?.[1];
 if(itemPage===page)item.classList.add('active');
 });
+
 const d=data[currentEntity];
 const curr=currency[currentEntity];
+const rates=fxRates[currentEntity];
+
+// Update badges
+document.getElementById('exception-count').textContent=d.totalExceptions-d.autoResolved;
+document.getElementById('review-count').textContent=d.tier2;
 
 if(page==='dashboard'){
+renderDashboard(d,curr,rates);
+}
+else if(page==='connections'){
+renderConnections(d,curr);
+}
+else if(page==='exception-queue'){
+renderExceptionQueue(d,curr);
+}
+else if(page==='auto-resolution'){
+renderAutoResolution(d,curr);
+}
+else if(page==='rules-engine'){
+renderRulesEngine(d,curr);
+}
+else if(page==='review-queue'){
+renderReviewQueue(d,curr);
+}
+else if(page==='safeguards'){
+renderSafeguards(d,curr);
+}
+else if(page==='resolution-history'){
+renderResolutionHistory(d,curr);
+}
+else if(page==='cfo-dashboard'){
+renderCFODashboard(d,curr);
+}
+else if(page==='three-way'){
+renderThreeWay(d,curr);
+}
+else if(page==='cash-position'){
+renderCashPosition(d,curr);
+}
+else if(page==='file-uploads'){
+renderFileUploads();
+}
+else if(page==='settings'){
+renderSettings(curr);
+}
+}
+
+function renderConnections(d,curr){
+document.getElementById('page-title').textContent='Connections';
+document.getElementById('page-subtitle').textContent='API integrations & data sync status';
+document.getElementById('content').innerHTML=`
+<div class="banner" style="background:linear-gradient(135deg,rgba(74,222,128,0.1) 0%,rgba(74,222,128,0.05) 100%);border-color:rgba(74,222,128,0.3)">
+<div class="banner-header">
+<div class="banner-icon">✅</div>
+<div>
+<div class="banner-title">All Systems Connected</div>
+<div style="font-size:14px;color:#999;margin-top:4px">6 integrations active • Auto-sync enabled • Last sync: 2 hours ago</div>
+</div>
+</div>
+<div class="banner-stats">
+<div class="banner-stat">
+<div class="banner-stat-value">2.4M</div>
+<div class="banner-stat-label">Transactions synced (30 days)</div>
+</div>
+<div class="banner-stat">
+<div class="banner-stat-value">100%</div>
+<div class="banner-stat-label">Sync success rate</div>
+</div>
+<div class="banner-stat">
+<div class="banner-stat-value">6:00 AM</div>
+<div class="banner-stat-label">Next auto-sync</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-header">
+<div>
+<div class="section-title">Payment Service Providers</div>
+<div class="section-subtitle">Auto-fetch settlement reports via API</div>
+</div>
+</div>
+<div class="grid grid-2">
+<div class="connection-card">
+<div class="connection-header">
+<div class="connection-icon" style="background:#635BFF">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-2.876 0-5.384-1.126-6.99-2.013l-.844 5.52C5.046 23.002 7.527 24 10.716 24c2.756 0 4.948-.631 6.501-1.874 1.633-1.298 2.538-3.248 2.538-5.489 0-4.106-2.676-5.976-6.779-7.487z"/></svg>
+</div>
+<div class="connection-info">
+<div class="connection-name">Stripe</div>
+<div class="connection-type">Payment Processor • API Connected</div>
+</div>
+<div class="connection-status status-connected">
+<div class="sync-dot"></div>
+Connected
+</div>
+</div>
+<div class="connection-details">
+<div class="connection-detail">
+<div class="detail-label">Last Sync</div>
+<div class="detail-value">2 hours ago</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Next Sync</div>
+<div class="detail-value">6:00 AM daily</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Transactions (30d)</div>
+<div class="detail-value">1,247</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Auto-Matched</div>
+<div class="detail-value">1,189 (95%)</div>
+</div>
+</div>
+</div>
+
+<div class="connection-card">
+<div class="connection-header">
+<div class="connection-icon" style="background:#FFB3C7">
+<div style="color:#000;font-weight:700;font-size:18px">K</div>
+</div>
+<div class="connection-info">
+<div class="connection-name">Klarna</div>
+<div class="connection-type">Payment Processor • API Connected</div>
+</div>
+<div class="connection-status status-connected">
+<div class="sync-dot"></div>
+Connected
+</div>
+</div>
+<div class="connection-details">
+<div class="connection-detail">
+<div class="detail-label">Last Sync</div>
+<div class="detail-value">2 hours ago</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Next Sync</div>
+<div class="detail-value">6:00 AM daily</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Transactions (30d)</div>
+<div class="detail-value">856</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Auto-Matched</div>
+<div class="detail-value">712 (83%)</div>
+</div>
+</div>
+</div>
+
+<div class="connection-card">
+<div class="connection-header">
+<div class="connection-icon" style="background:#0070BA">
+<div style="color:#fff;font-weight:700;font-size:18px">P</div>
+</div>
+<div class="connection-info">
+<div class="connection-name">PayPal</div>
+<div class="connection-type">Payment Processor • API Connected</div>
+</div>
+<div class="connection-status status-connected">
+<div class="sync-dot"></div>
+Connected
+</div>
+</div>
+<div class="connection-details">
+<div class="connection-detail">
+<div class="detail-label">Last Sync</div>
+<div class="detail-value">2 hours ago</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Next Sync</div>
+<div class="detail-value">6:00 AM daily</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Transactions (30d)</div>
+<div class="detail-value">624</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Auto-Matched</div>
+<div class="detail-value">598 (96%)</div>
+</div>
+</div>
+</div>
+
+<div class="connection-card">
+<div class="connection-header">
+<div class="connection-icon" style="background:#0ABF53">
+<div style="color:#fff;font-weight:700;font-size:18px">A</div>
+</div>
+<div class="connection-info">
+<div class="connection-name">Adyen</div>
+<div class="connection-type">Payment Processor • API Connected</div>
+</div>
+<div class="connection-status status-connected">
+<div class="sync-dot"></div>
+Connected
+</div>
+</div>
+<div class="connection-details">
+<div class="connection-detail">
+<div class="detail-label">Last Sync</div>
+<div class="detail-value">2 hours ago</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Next Sync</div>
+<div class="detail-value">6:00 AM daily</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Transactions (30d)</div>
+<div class="detail-value">458</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Auto-Matched</div>
+<div class="detail-value">445 (97%)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-header">
+<div>
+<div class="section-title">Bank Accounts</div>
+<div class="section-subtitle">Real-time transaction feeds via Open Banking</div>
+</div>
+</div>
+<div class="grid grid-2">
+<div class="connection-card">
+<div class="connection-header">
+<div class="connection-icon" style="background:#003C71">
+<div style="color:#fff;font-weight:700;font-size:16px">CITI</div>
+</div>
+<div class="connection-info">
+<div class="connection-name">Citi Business Account</div>
+<div class="connection-type">Bank • Connected via TrueLayer (Open Banking)</div>
+</div>
+<div class="connection-status status-connected">
+<div class="sync-dot"></div>
+Connected
+</div>
+</div>
+<div class="connection-details">
+<div class="connection-detail">
+<div class="detail-label">Last Sync</div>
+<div class="detail-value">1 hour ago</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Sync Frequency</div>
+<div class="detail-value">Every 2 hours</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Account Number</div>
+<div class="detail-value">****5847</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Balance</div>
+<div class="detail-value">${curr}12.5M</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<div class="section-header">
+<div>
+<div class="section-title">Accounting & ERP</div>
+<div class="section-subtitle">Revenue and invoice data sync</div>
+</div>
+</div>
+<div class="grid grid-2">
+<div class="connection-card">
+<div class="connection-header">
+<div class="connection-icon" style="background:#F77F00">
+<div style="color:#fff;font-weight:700;font-size:16px">NS</div>
+</div>
+<div class="connection-info">
+<div class="connection-name">NetSuite</div>
+<div class="connection-type">ERP System • API Connected</div>
+</div>
+<div class="connection-status status-connected">
+<div class="sync-dot"></div>
+Connected
+</div>
+</div>
+<div class="connection-details">
+<div class="connection-detail">
+<div class="detail-label">Last Sync</div>
+<div class="detail-value">3 hours ago</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Next Sync</div>
+<div class="detail-value">6:00 AM daily</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Revenue Records (30d)</div>
+<div class="detail-value">3,185</div>
+</div>
+<div class="connection-detail">
+<div class="detail-label">Matched to PSP</div>
+<div class="detail-value">2,944 (92%)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card" style="margin-top:32px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+<div>
+<div class="section-title">Add New Connection</div>
+<div class="section-subtitle">Connect additional PSPs, banks, or accounting systems</div>
+</div>
+<button class="btn btn-primary" onclick="showAddConnection()">+ Add Connection</button>
+</div>
+<div class="grid grid-4">
+<div style="text-align:center;padding:20px;border:1px dashed #333;border-radius:8px;cursor:pointer;transition:all 0.2s" onclick="alert('Connect Xero feature coming soon')">
+<div style="font-size:32px;margin-bottom:8px">📊</div>
+<div style="font-size:14px;font-weight:600">Xero</div>
+<div style="font-size:12px;color:#999;margin-top:4px">Accounting</div>
+</div>
+<div style="text-align:center;padding:20px;border:1px dashed #333;border-radius:8px;cursor:pointer;transition:all 0.2s" onclick="alert('Connect QuickBooks feature coming soon')">
+<div style="font-size:32px;margin-bottom:8px">📗</div>
+<div style="font-size:14px;font-weight:600">QuickBooks</div>
+<div style="font-size:12px;color:#999;margin-top:4px">Accounting</div>
+</div>
+<div style="text-align:center;padding:20px;border:1px dashed #333;border-radius:8px;cursor:pointer;transition:all 0.2s" onclick="alert('Connect HSBC feature coming soon')">
+<div style="font-size:32px;margin-bottom:8px">🏦</div>
+<div style="font-size:14px;font-weight:600">HSBC</div>
+<div style="font-size:12px;color:#999;margin-top:4px">Bank</div>
+</div>
+<div style="text-align:center;padding:20px;border:1px dashed #333;border-radius:8px;cursor:pointer;transition:all 0.2s" onclick="alert('Connect Barclays feature coming soon')">
+<div style="font-size:32px;margin-bottom:8px">🏦</div>
+<div style="font-size:14px;font-weight:600">Barclays</div>
+<div style="font-size:12px;color:#999;margin-top:4px">Bank</div>
+</div>
+</div>
+</div>
+`;
+}
+
+function renderDashboard(d,curr,rates){
 document.getElementById('page-title').textContent='Dashboard';
 document.getElementById('page-subtitle').textContent='Real-time treasury reconciliation & exception management';
 document.getElementById('content').innerHTML=`
+<div style="background:#0f0f0f;border:1px solid #222;border-radius:8px;padding:16px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;align-items:center;gap:12px">
+<div class="sync-dot"></div>
+<div>
+<div style="font-size:14px;font-weight:600">All integrations synced</div>
+<div style="font-size:12px;color:#999">Last sync: 2 hours ago • Next sync: 6:00 AM daily</div>
+</div>
+</div>
+<button class="btn btn-secondary btn-small" onclick="showPage('connections')">View Connections</button>
+</div>
+
 <div class="banner">
 <div class="banner-header">
 <div class="banner-icon">🤖</div>
 <div>
 <div class="banner-title">Auto-Resolution Active</div>
-<div style="font-size:14px;color:#999;margin-top:4px">6 matching rules running 24/7</div>
+<div style="font-size:14px;color:#999;margin-top:4px">6 matching rules running 24/7 • ${d.automationRate}% automation rate</div>
 </div>
 </div>
 <div class="banner-stats">
@@ -332,7 +811,7 @@ document.getElementById('content').innerHTML=`
 <div class="banner-actions">
 <button class="btn btn-primary" onclick="showPage('auto-resolution')">View Auto-Resolution</button>
 <button class="btn btn-secondary" onclick="showPage('rules-engine')">View Rules</button>
-<button class="btn btn-secondary" onclick="showPage('review-queue')">Review Queue</button>
+<button class="btn btn-secondary" onclick="showPage('review-queue')">Review Queue (${d.tier2})</button>
 </div>
 </div>
 
@@ -344,22 +823,22 @@ document.getElementById('content').innerHTML=`
 </div>
 </div>
 <div class="aging-grid">
-<div class="aging-card green">
+<div class="aging-card green" onclick="filterByAging('0-2')">
 <div class="aging-number">${d.agingData.onTrack}</div>
 <div class="aging-label">On Track</div>
 <div class="aging-days">0-2 DAYS</div>
 </div>
-<div class="aging-card yellow">
+<div class="aging-card yellow" onclick="filterByAging('3-5')">
 <div class="aging-number">${d.agingData.watch}</div>
 <div class="aging-label">Watch</div>
 <div class="aging-days">3-5 DAYS</div>
 </div>
-<div class="aging-card orange">
+<div class="aging-card orange" onclick="filterByAging('6-10')">
 <div class="aging-number">${d.agingData.aging}</div>
 <div class="aging-label">Aging</div>
 <div class="aging-days">6-10 DAYS</div>
 </div>
-<div class="aging-card red">
+<div class="aging-card red" onclick="filterByAging('10+')">
 <div class="aging-number">${d.agingData.breached}</div>
 <div class="aging-label">Breached SLA</div>
 <div class="aging-days">10+ DAYS</div>
@@ -369,23 +848,26 @@ document.getElementById('content').innerHTML=`
 
 <div class="section">
 <div class="section-header">
+<div>
 <div class="section-title">PSP Settlement Breakdown</div>
 <div class="section-subtitle">Expected vs Received by Payment Processor</div>
 </div>
+</div>
 <div class="card">
-<table class="psp-table">
+<input type="text" class="search-box" placeholder="Search PSPs..." oninput="filterTable(this.value,'psp-tbody')" style="margin-bottom:16px" />
+<table id="psp-table">
 <thead>
 <tr>
-<th>PSP</th>
-<th>Expected</th>
-<th>Received</th>
-<th>Variance</th>
+<th class="sortable" onclick="sortTable('psp','psp')">PSP</th>
+<th class="sortable" onclick="sortTable('psp','expected')">Expected</th>
+<th class="sortable" onclick="sortTable('psp','received')">Received</th>
+<th class="sortable" onclick="sortTable('psp','variance')">Variance</th>
 <th>Status</th>
 </tr>
 </thead>
-<tbody>
+<tbody id="psp-tbody">
 ${d.pspBreakdown.map(p=>`
-<tr>
+<tr data-psp="${p.psp.toLowerCase()}">
 <td><strong>${p.psp}</strong></td>
 <td>${p.expected}</td>
 <td>${p.received}</td>
@@ -400,21 +882,25 @@ ${d.pspBreakdown.map(p=>`
 
 <div class="grid grid-2">
 <div class="card">
-<div class="section-title" style="margin-bottom:16px">FX Spot Rates</div>
-<div class="section-subtitle" style="margin-bottom:20px">Live exchange rates</div>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+<div>
+<div class="section-title">Monthly FX Rates</div>
+<div class="section-subtitle">Corporate rates for reconciliation • ${new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</div>
+</div>
+<button class="btn btn-secondary btn-small" onclick="editFXRates()">Edit Rates</button>
+</div>
 <div class="fx-widget">
+${Object.entries(rates).map(([pair,data])=>`
 <div class="fx-pair">
-<span>GBP/USD</span>
-<span class="fx-rate">1.2845</span>
+<span>${pair}</span>
+<span>
+<span class="fx-rate">${data.rate.toFixed(4)}</span>
+</span>
 </div>
-<div class="fx-pair">
-<span>GBP/EUR</span>
-<span class="fx-rate">1.1623</span>
+`).join('')}
 </div>
-<div class="fx-pair">
-<span>USD/EUR</span>
-<span class="fx-rate">0.9049</span>
-</div>
+<div style="margin-top:16px;padding:12px;background:#0f0f0f;border-radius:6px;font-size:13px;color:#999">
+<strong>Note:</strong> These are your corporate monthly rates set by the finance team. Used for reconciliation variance calculations. Last updated: ${new Date(Date.now()-5*24*60*60*1000).toLocaleDateString('en-GB')} by Alex Morgan.
 </div>
 </div>
 <div class="card">
@@ -427,7 +913,7 @@ ${d.pspBreakdown.map(p=>`
 </div>
 <div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #222">
 <span style="color:#999">Accuracy</span>
-<strong>${d.accuracy}%</strong>
+<strong class="confidence-high">${d.accuracy}%</strong>
 </div>
 <div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid #222">
 <span style="color:#999">Total Exceptions</span>
@@ -435,7 +921,7 @@ ${d.pspBreakdown.map(p=>`
 </div>
 <div style="display:flex;justify-content:space-between">
 <span style="color:#999">Auto-Resolved</span>
-<strong>${d.autoResolved}</strong>
+<strong class="confidence-high">${d.autoResolved}</strong>
 </div>
 </div>
 </div>
@@ -443,7 +929,45 @@ ${d.pspBreakdown.map(p=>`
 `;
 }
 
-else if(page==='auto-resolution'){
+function renderExceptionQueue(d,curr){
+document.getElementById('page-title').textContent='Exception Queue';
+document.getElementById('page-subtitle').textContent=`${d.totalExceptions-d.autoResolved} exceptions requiring attention`;
+document.getElementById('content').innerHTML=`
+<div class="section">
+<input type="text" class="search-box" placeholder="Search by ID, PSP, amount..." oninput="filterTable(this.value,'exception-tbody')" />
+<div class="card">
+<table id="exception-table">
+<thead>
+<tr>
+<th class="sortable" onclick="sortTable('exception','id')">ID</th>
+<th class="sortable" onclick="sortTable('exception','amount')">Amount</th>
+<th class="sortable" onclick="sortTable('exception','psp')">PSP</th>
+<th class="sortable" onclick="sortTable('exception','age')">Age</th>
+<th class="sortable" onclick="sortTable('exception','confidence')">Confidence</th>
+<th>Status</th>
+<th>Next Action</th>
+</tr>
+</thead>
+<tbody id="exception-tbody">
+${d.transactions.filter(t=>t.status!=='Auto-Resolved').map(t=>`
+<tr class="clickable" onclick="showResolutionDetail('${t.id}')" data-id="${t.id}" data-psp="${t.psp.toLowerCase()}" data-amount="${t.amount}" data-age="${t.age}" data-confidence="${t.confidence}">
+<td><strong>${t.id}</strong></td>
+<td>${curr}${t.amount.toLocaleString()}</td>
+<td>${t.psp}</td>
+<td>${t.age} days</td>
+<td><span class="confidence-${t.confidence>=90?'high':t.confidence>=80?'medium':'low'}">${t.confidence}%</span></td>
+<td><span class="status-badge status-${t.status.toLowerCase()}">${t.status}</span></td>
+<td>${t.action}</td>
+</tr>
+`).join('')}
+</tbody>
+</table>
+</div>
+</div>
+`;
+}
+
+function renderAutoResolution(d,curr){
 document.getElementById('page-title').textContent='Auto-Resolution Dashboard';
 document.getElementById('page-subtitle').textContent='Near-100% automation with complete accuracy and transparency';
 document.getElementById('content').innerHTML=`
@@ -472,7 +996,7 @@ document.getElementById('content').innerHTML=`
 <div style="font-weight:600;margin-bottom:12px">Criteria:</div>
 <div class="criterion">Exact amount match (to the cent)</div>
 <div class="criterion">Date within T+0 to T+3 settlement window</div>
-<div class="criterion">Reference number partial match</div>
+<div class="criterion">Reference number partial match (≥70%)</div>
 <div class="criterion">Same PSP → Same bank account</div>
 <div class="criterion">Amount < ${curr}10,000</div>
 </div>
@@ -527,7 +1051,7 @@ document.getElementById('content').innerHTML=`
 </div>
 </div>
 <div style="margin-top:16px">
-<button class="btn btn-secondary" onclick="showPage('review-queue')" style="width:100%">View Review Queue (12 items)</button>
+<button class="btn btn-secondary" onclick="showPage('review-queue')" style="width:100%">View Review Queue (${d.tier2} items)</button>
 </div>
 </div>
 
@@ -603,7 +1127,7 @@ document.getElementById('content').innerHTML=`
 `;
 }
 
-else if(page==='rules-engine'){
+function renderRulesEngine(d,curr){
 document.getElementById('page-title').textContent='Matching Rules Engine';
 document.getElementById('page-subtitle').textContent='Confidence thresholds & matching logic for auto-resolution';
 document.getElementById('content').innerHTML=`
@@ -613,7 +1137,7 @@ document.getElementById('content').innerHTML=`
 <div class="section-title">Active Matching Rules</div>
 <div class="section-subtitle">6 rules running 24/7 • ${d.autoResolved} exceptions auto-resolved this month</div>
 </div>
-<button class="btn btn-primary">+ Add Custom Rule</button>
+<button class="btn btn-primary" onclick="alert('Add Custom Rule feature coming soon')">+ Add Custom Rule</button>
 </div>
 
 <div class="rule-card">
@@ -788,7 +1312,7 @@ document.getElementById('content').innerHTML=`
 `;
 }
 
-else if(page==='review-queue'){
+function renderReviewQueue(d,curr){
 document.getElementById('page-title').textContent='Daily Review Queue';
 document.getElementById('page-subtitle').textContent='Items auto-resolved with medium confidence - recommend spot-checking';
 document.getElementById('content').innerHTML=`
@@ -797,102 +1321,57 @@ document.getElementById('content').innerHTML=`
 <div style="background:#1a1a1a;border-radius:8px;padding:20px;margin-bottom:24px">
 <div style="display:flex;justify-content:space-between;align-items:center">
 <div>
-<div style="font-size:20px;font-weight:600;margin-bottom:4px">⚠️ 12 items flagged for review</div>
+<div style="font-size:20px;font-weight:600;margin-bottom:4px">⚠️ ${d.tier2} items flagged for review</div>
 <div style="font-size:14px;color:#999">Auto-resolved with 85-99% confidence • Recommend spot-check before end of day</div>
 </div>
 <div style="display:flex;gap:12px">
-<button class="btn btn-secondary">Review Each</button>
-<button class="btn btn-primary">✓ Approve All</button>
+<button class="btn btn-secondary" onclick="alert('Review each feature coming soon')">Review Each</button>
+<button class="btn btn-primary" onclick="approveAll()">✓ Approve All</button>
 </div>
 </div>
 </div>
 
-<input type="text" class="search-box" placeholder="Search transactions..." />
+<input type="text" class="search-box" placeholder="Search transactions..." oninput="filterTable(this.value,'review-tbody')" />
 
-<table>
+<table id="review-table">
 <thead>
 <tr>
-<th>TX ID</th>
-<th>Amount</th>
-<th>Confidence</th>
+<th class="sortable" onclick="sortTable('review','id')">TX ID</th>
+<th class="sortable" onclick="sortTable('review','amount')">Amount</th>
+<th class="sortable" onclick="sortTable('review','confidence')">Confidence</th>
 <th>Reason Flagged</th>
 <th>Rule Applied</th>
 <th>Date</th>
 <th>Action</th>
 </tr>
 </thead>
-<tbody>
-<tr class="clickable" onclick="showResolutionDetail('TX-235')">
+<tbody id="review-tbody">
+<tr class="clickable" onclick="showResolutionDetail('TX-235')" data-amount="9999.87" data-confidence="92">
 <td><strong>TX-235</strong></td>
 <td>${curr}9,999.87</td>
 <td><span class="confidence-medium">92%</span></td>
 <td>${curr}0.13 fee variance</td>
 <td>Rule 2 (Tolerance)</td>
 <td>2025-04-01</td>
-<td><button class="btn btn-primary" style="padding:6px 16px;font-size:12px">✓ Approve</button></td>
+<td><button class="btn btn-primary btn-small" onclick="event.stopPropagation();approve('TX-235')">✓ Approve</button></td>
 </tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-241')">
+<tr class="clickable" onclick="showResolutionDetail('TX-241')" data-amount="15234" data-confidence="89">
 <td><strong>TX-241</strong></td>
 <td>${curr}15,234.00</td>
 <td><span class="confidence-medium">89%</span></td>
 <td>T+4 (1 day late)</td>
 <td>Rule 2 (Tolerance)</td>
 <td>2025-04-01</td>
-<td><button class="btn btn-primary" style="padding:6px 16px;font-size:12px">✓ Approve</button></td>
+<td><button class="btn btn-primary btn-small" onclick="event.stopPropagation();approve('TX-241')">✓ Approve</button></td>
 </tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-248')">
+<tr class="clickable" onclick="showResolutionDetail('TX-248')" data-amount="8500" data-confidence="91">
 <td><strong>TX-248</strong></td>
 <td>${curr}8,500.00</td>
 <td><span class="confidence-medium">91%</span></td>
 <td>Reference 75% match</td>
 <td>Rule 6 (Pattern)</td>
 <td>2025-04-02</td>
-<td><button class="btn btn-primary" style="padding:6px 16px;font-size:12px">✓ Approve</button></td>
-</tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-252')">
-<td><strong>TX-252</strong></td>
-<td>${curr}12,450.30</td>
-<td><span class="confidence-medium">88%</span></td>
-<td>FX variance 0.4%</td>
-<td>Rule 4 (FX)</td>
-<td>2025-04-02</td>
-<td><button class="btn btn-primary" style="padding:6px 16px;font-size:12px">✓ Approve</button></td>
-</tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-256')">
-<td><strong>TX-256</strong></td>
-<td>${curr}7,899.50</td>
-<td><span class="confidence-medium">93%</span></td>
-<td>${curr}0.50 fee variance</td>
-<td>Rule 2 (Tolerance)</td>
-<td>2025-04-03</td>
-<td><button class="btn btn-primary" style="padding:6px 16px;font-size:12px">✓ Approve</button></td>
-</tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-261')">
-<td><strong>TX-261</strong></td>
-<td>${curr}18,234.00</td>
-<td><span class="confidence-medium">86%</span></td>
-<td>Multi-part settlement</td>
-<td>Rule 5 (Aggregation)</td>
-<td>2025-04-03</td>
-<td><button class="btn btn-primary" style="padding:6px 16px;font-size:12px">✓ Approve</button></td>
-</tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-265')">
-<td><strong>TX-265</strong></td>
-<td>${curr}6,750.25</td>
-<td><span class="confidence-medium">90%</span></td>
-<td>${curr}0.25 fee variance</td>
-<td>Rule 2 (Tolerance)</td>
-<td>2025-04-04</td>
-<td><button class="btn btn-primary" style="padding:6px 16px;font-size:12px">✓ Approve</button></td>
-</tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-269')">
-<td><strong>TX-269</strong></td>
-<td>${curr}11,500.00</td>
-<td><span class="confidence-medium">87%</span></td>
-<td>T+5 (2 days late)</td>
-<td>Rule 2 (Tolerance)</td>
-<td>2025-04-04</td>
-<td><button class="btn btn-primary" style="padding:6px 16px;font-size:12px">✓ Approve</button></td>
+<td><button class="btn btn-primary btn-small" onclick="event.stopPropagation();approve('TX-248')">✓ Approve</button></td>
 </tr>
 </tbody>
 </table>
@@ -901,7 +1380,7 @@ document.getElementById('content').innerHTML=`
 <div style="font-weight:600;margin-bottom:12px">📊 Review Queue Summary</div>
 <div class="grid grid-3" style="margin-top:16px">
 <div>
-<div style="font-size:24px;font-weight:700;margin-bottom:4px">12</div>
+<div style="font-size:24px;font-weight:700;margin-bottom:4px">${d.tier2}</div>
 <div style="font-size:13px;color:#999">Items Pending Review</div>
 </div>
 <div>
@@ -921,7 +1400,7 @@ document.getElementById('content').innerHTML=`
 `;
 }
 
-else if(page==='safeguards'){
+function renderSafeguards(d,curr){
 document.getElementById('page-title').textContent='Safeguards & Controls';
 document.getElementById('page-subtitle').textContent='Ensuring 100% accuracy with comprehensive safety mechanisms';
 document.getElementById('content').innerHTML=`
@@ -1058,112 +1537,40 @@ document.getElementById('content').innerHTML=`
 `;
 }
 
-else if(page==='exception-queue'){
-document.getElementById('page-title').textContent='Exception Queue';
-document.getElementById('page-subtitle').textContent='47 exceptions requiring attention';
-document.getElementById('content').innerHTML=`
-<div class="section">
-<input type="text" class="search-box" placeholder="Search by ID, PSP, amount..." />
-<div class="card">
-<table>
-<thead>
-<tr>
-<th>ID</th>
-<th>Amount</th>
-<th>PSP</th>
-<th>Age</th>
-<th>Confidence</th>
-<th>Status</th>
-<th>Next Action</th>
-</tr>
-</thead>
-<tbody>
-<tr class="clickable" onclick="showResolutionDetail('TX-001')">
-<td><strong>TX-001</strong></td>
-<td>${curr}5,000</td>
-<td>Stripe</td>
-<td>2 days</td>
-<td><span class="confidence-low">78%</span></td>
-<td><span class="status-badge status-variance">Open</span></td>
-<td>Manual Review</td>
-</tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-002')">
-<td><strong>TX-002</strong></td>
-<td>${curr}2,300</td>
-<td>Klarna</td>
-<td>1 day</td>
-<td><span class="confidence-medium">92%</span></td>
-<td><span class="status-badge status-review">Queued</span></td>
-<td>Auto T+1</td>
-</tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-003')">
-<td><strong>TX-003</strong></td>
-<td>${curr}1,200</td>
-<td>PayPal</td>
-<td>0 days</td>
-<td><span class="confidence-high">99%</span></td>
-<td><span class="status-badge status-auto">Auto-Resolved</span></td>
-<td>Complete</td>
-</tr>
-<tr>
-<td><strong>TX-004</strong></td>
-<td>${curr}8,750</td>
-<td>Adyen</td>
-<td>3 days</td>
-<td><span class="confidence-low">72%</span></td>
-<td><span class="status-badge status-variance">Open</span></td>
-<td>Manual Review</td>
-</tr>
-<tr>
-<td><strong>TX-005</strong></td>
-<td>${curr}3,450</td>
-<td>Stripe</td>
-<td>1 day</td>
-<td><span class="confidence-high">96%</span></td>
-<td><span class="status-badge status-auto">Auto-Resolved</span></td>
-<td>Complete</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-`;
-}
-
-else if(page==='resolution-history'){
+function renderResolutionHistory(d,curr){
 document.getElementById('page-title').textContent='Resolution History';
 document.getElementById('page-subtitle').textContent='Complete record of all resolved exceptions';
 document.getElementById('content').innerHTML=`
 <div class="section">
-<div style="display:flex;gap:12px;margin-bottom:16px">
-<select class="entity-selector">
-<option>All Resolutions</option>
-<option>Auto-Resolved Only</option>
-<option>Manual Only</option>
+<div class="filter-bar">
+<select class="entity-selector" id="resolution-filter" onchange="filterResolutionHistory()">
+<option value="all">All Resolutions</option>
+<option value="auto">Auto-Resolved Only</option>
+<option value="manual">Manual Only</option>
 </select>
-<select class="entity-selector">
+<select class="entity-selector" id="date-filter">
 <option>Last 30 Days</option>
 <option>Last 7 Days</option>
 <option>Today</option>
 </select>
-<input type="text" class="search-box" placeholder="Search..." style="flex:1" />
+<input type="text" class="search-box" placeholder="Search..." style="flex:1" oninput="filterTable(this.value,'history-tbody')" />
 </div>
 
 <div class="card">
-<table>
+<table id="history-table">
 <thead>
 <tr>
-<th>Date</th>
-<th>TX ID</th>
-<th>Amount</th>
+<th class="sortable" onclick="sortTable('history','date')">Date</th>
+<th class="sortable" onclick="sortTable('history','id')">TX ID</th>
+<th class="sortable" onclick="sortTable('history','amount')">Amount</th>
 <th>Exception</th>
 <th>Method</th>
 <th>Rule/Analyst</th>
-<th>Confidence</th>
+<th class="sortable" onclick="sortTable('history','confidence')">Confidence</th>
 </tr>
 </thead>
-<tbody>
-<tr class="clickable" onclick="showResolutionDetail('TX-235')">
+<tbody id="history-tbody">
+<tr class="clickable" onclick="showResolutionDetail('TX-235')" data-date="2025-04-01" data-amount="5234" data-confidence="99" data-method="auto">
 <td>2025-04-01</td>
 <td><strong>TX-235</strong></td>
 <td>${curr}5,234</td>
@@ -1172,7 +1579,7 @@ document.getElementById('content').innerHTML=`
 <td>Rule 3</td>
 <td><span class="confidence-high">99%</span></td>
 </tr>
-<tr>
+<tr data-date="2025-04-01" data-amount="12500" data-method="manual">
 <td>2025-04-01</td>
 <td><strong>TX-236</strong></td>
 <td>${curr}12,500</td>
@@ -1181,7 +1588,7 @@ document.getElementById('content').innerHTML=`
 <td>Alex Morgan</td>
 <td>-</td>
 </tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-237')">
+<tr class="clickable" onclick="showResolutionDetail('TX-237')" data-date="2025-04-02" data-amount="3450" data-confidence="99" data-method="auto">
 <td>2025-04-02</td>
 <td><strong>TX-237</strong></td>
 <td>${curr}3,450</td>
@@ -1190,7 +1597,7 @@ document.getElementById('content').innerHTML=`
 <td>Rule 1</td>
 <td><span class="confidence-high">99%</span></td>
 </tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-238')">
+<tr class="clickable" onclick="showResolutionDetail('TX-238')" data-date="2025-04-02" data-amount="8750" data-confidence="89" data-method="auto">
 <td>2025-04-02</td>
 <td><strong>TX-238</strong></td>
 <td>${curr}8,750</td>
@@ -1199,7 +1606,7 @@ document.getElementById('content').innerHTML=`
 <td>Rule 4</td>
 <td><span class="confidence-medium">89%</span></td>
 </tr>
-<tr>
+<tr data-date="2025-04-03" data-amount="28000" data-method="manual">
 <td>2025-04-03</td>
 <td><strong>TX-239</strong></td>
 <td>${curr}28,000</td>
@@ -1207,6 +1614,15 @@ document.getElementById('content').innerHTML=`
 <td><span class="status-badge status-variance">👤 Manual</span></td>
 <td>Alex Morgan</td>
 <td>-</td>
+</tr>
+<tr class="clickable" onclick="showResolutionDetail('TX-240')" data-date="2025-04-03" data-amount="4200" data-confidence="97" data-method="auto">
+<td>2025-04-03</td>
+<td><strong>TX-240</strong></td>
+<td>${curr}4,200</td>
+<td>PayPal T+1</td>
+<td><span class="status-badge status-auto">🤖 Auto</span></td>
+<td>Rule 1</td>
+<td><span class="confidence-high">97%</span></td>
 </tr>
 </tbody>
 </table>
@@ -1237,7 +1653,7 @@ document.getElementById('content').innerHTML=`
 `;
 }
 
-else if(page==='cfo-dashboard'){
+function renderCFODashboard(d,curr){
 document.getElementById('page-title').textContent='CFO Dashboard';
 document.getElementById('page-subtitle').textContent='Executive view of treasury performance & automation ROI';
 document.getElementById('content').innerHTML=`
@@ -1353,7 +1769,7 @@ ${[60,65,68,72,75,78,82,85].map((rate,i)=>`
 `;
 }
 
-else if(page==='three-way'){
+function renderThreeWay(d,curr){
 document.getElementById('page-title').textContent='Three-Way Match';
 document.getElementById('page-subtitle').textContent='PSP vs Bank vs ERP reconciliation';
 document.getElementById('content').innerHTML=`
@@ -1367,7 +1783,7 @@ document.getElementById('content').innerHTML=`
 <div style="font-size:13px;color:#999">Auto-Match Rate</div>
 </div>
 <div style="text-align:center;padding:20px;background:#0f0f0f;border-radius:8px">
-<div style="font-size:32px;font-weight:700;margin-bottom:8px">47</div>
+<div style="font-size:32px;font-weight:700;margin-bottom:8px">${d.totalExceptions-d.autoResolved}</div>
 <div style="font-size:13px;color:#999">Exceptions Remaining</div>
 </div>
 <div style="text-align:center;padding:20px;background:#0f0f0f;border-radius:8px">
@@ -1377,19 +1793,21 @@ document.getElementById('content').innerHTML=`
 </div>
 </div>
 
-<table>
+<input type="text" class="search-box" placeholder="Search transactions..." oninput="filterTable(this.value,'threeway-tbody')" />
+
+<table id="threeway-table">
 <thead>
 <tr>
-<th>Transaction</th>
-<th>PSP Amount</th>
-<th>Bank Amount</th>
-<th>ERP Amount</th>
+<th class="sortable" onclick="sortTable('threeway','id')">Transaction</th>
+<th class="sortable" onclick="sortTable('threeway','psp')">PSP Amount</th>
+<th class="sortable" onclick="sortTable('threeway','bank')">Bank Amount</th>
+<th class="sortable" onclick="sortTable('threeway','erp')">ERP Amount</th>
 <th>Status</th>
 <th>Confidence</th>
 </tr>
 </thead>
-<tbody>
-<tr class="clickable" onclick="showResolutionDetail('TX-501')">
+<tbody id="threeway-tbody">
+<tr class="clickable" onclick="showResolutionDetail('TX-501')" data-psp="100000" data-bank="100000" data-erp="100000">
 <td><strong>TX-501</strong></td>
 <td>${curr}100,000</td>
 <td>${curr}100,000</td>
@@ -1397,7 +1815,7 @@ document.getElementById('content').innerHTML=`
 <td><span class="status-badge status-matched">Matched</span></td>
 <td><span class="confidence-high">99%</span></td>
 </tr>
-<tr>
+<tr data-psp="50000" data-bank="48500" data-erp="50000">
 <td><strong>TX-502</strong></td>
 <td>${curr}50,000</td>
 <td>${curr}48,500</td>
@@ -1405,7 +1823,7 @@ document.getElementById('content').innerHTML=`
 <td><span class="status-badge status-missing">Bank Short</span></td>
 <td><span class="confidence-low">-</span></td>
 </tr>
-<tr class="clickable" onclick="showResolutionDetail('TX-503')">
+<tr class="clickable" onclick="showResolutionDetail('TX-503')" data-psp="75000" data-bank="75000" data-erp="75000">
 <td><strong>TX-503</strong></td>
 <td>${curr}75,000</td>
 <td>${curr}75,000</td>
@@ -1413,7 +1831,7 @@ document.getElementById('content').innerHTML=`
 <td><span class="status-badge status-matched">Matched</span></td>
 <td><span class="confidence-high">99%</span></td>
 </tr>
-<tr>
+<tr data-psp="32000" data-bank="32000" data-erp="30000">
 <td><strong>TX-504</strong></td>
 <td>${curr}32,000</td>
 <td>${curr}32,000</td>
@@ -1428,7 +1846,7 @@ document.getElementById('content').innerHTML=`
 `;
 }
 
-else if(page==='cash-position'){
+function renderCashPosition(d,curr){
 document.getElementById('page-title').textContent='Cash Position';
 document.getElementById('page-subtitle').textContent='Real-time cash visibility across all entities';
 document.getElementById('content').innerHTML=`
@@ -1437,7 +1855,7 @@ document.getElementById('content').innerHTML=`
 <div class="card metric-card">
 <div class="metric-value">${curr}12.5M</div>
 <div class="metric-label">Total Cash Position</div>
-<div class="metric-trend">As of today</div>
+<div class="metric-trend">As of ${new Date().toLocaleDateString('en-GB')}</div>
 </div>
 <div class="card metric-card">
 <div class="metric-value">${curr}3.2M</div>
@@ -1460,11 +1878,11 @@ document.getElementById('content').innerHTML=`
 <table>
 <thead>
 <tr>
-<th>Entity</th>
-<th>Current Balance</th>
-<th>Pending In</th>
-<th>Pending Out</th>
-<th>Projected (7d)</th>
+<th class="sortable" onclick="sortTable('cash','entity')">Entity</th>
+<th class="sortable" onclick="sortTable('cash','current')">Current Balance</th>
+<th class="sortable" onclick="sortTable('cash','pending-in')">Pending In</th>
+<th class="sortable" onclick="sortTable('cash','pending-out')">Pending Out</th>
+<th class="sortable" onclick="sortTable('cash','projected')">Projected (7d)</th>
 </tr>
 </thead>
 <tbody>
@@ -1496,56 +1914,111 @@ document.getElementById('content').innerHTML=`
 `;
 }
 
-else if(page==='file-uploads'){
-document.getElementById('page-title').textContent='File Uploads';
-document.getElementById('page-subtitle').textContent='Bank statements & PSP settlement files';
+function renderFileUploads(){
+document.getElementById('page-title').textContent='Historical Import & Backup';
+document.getElementById('page-subtitle').textContent='Manual file uploads for historical data and API backup';
 document.getElementById('content').innerHTML=`
+<div class="card" style="background:#1a1a1a;border-color:#333;margin-bottom:24px">
+<div style="display:flex;align-items:start;gap:16px">
+<div style="font-size:32px">ℹ️</div>
+<div>
+<div style="font-size:16px;font-weight:600;margin-bottom:8px">When to use manual file uploads:</div>
+<div style="font-size:14px;color:#999;line-height:1.6">
+<strong style="color:#fff">1. Historical Data Import:</strong> Onboarding and need to reconcile past months before API connections were established.<br>
+<strong style="color:#fff">2. API Backup:</strong> If a PSP or bank API experiences downtime, upload settlement reports manually to continue reconciliation.<br>
+<strong style="color:#fff">3. Legacy Systems:</strong> Custom ERPs or banks without API support - upload CSV exports from your system.<br>
+<strong style="color:#fff">4. Additional Detail:</strong> Sometimes manual reports contain more detail than API endpoints (e.g., Klarna reserve breakdowns).
+</div>
+<div style="margin-top:12px;padding:12px;background:#0f0f0f;border-radius:6px;font-size:13px;color:#facc15">
+💡 <strong>Normal operation:</strong> All PSPs, banks, and ERP sync automatically via API. No manual uploads needed for day-to-day reconciliation.
+</div>
+</div>
+</div>
+</div>
+
 <div class="section">
 <div class="card">
 <div style="text-align:center;padding:60px">
 <div style="font-size:48px;margin-bottom:16px">📁</div>
-<div style="font-size:18px;font-weight:600;margin-bottom:8px">Upload Bank Statements or PSP Files</div>
-<div style="font-size:14px;color:#999;margin-bottom:24px">Supports CSV, XLSX, PDF, MT940</div>
-<button class="btn btn-primary">Select Files</button>
+<div style="font-size:18px;font-weight:600;margin-bottom:8px">Upload Historical Files</div>
+<div style="font-size:14px;color:#999;margin-bottom:24px">Bank statements (CSV, PDF, MT940) • PSP settlement reports (CSV, XLSX) • ERP exports</div>
+<button class="btn btn-primary" onclick="document.getElementById('file-input').click()">Select Files</button>
+<input type="file" id="file-input" style="display:none" multiple accept=".csv,.xlsx,.pdf,.mt940" onchange="handleFileUpload(event)" />
 </div>
 </div>
 </div>
 
 <div class="section">
 <div class="section-header">
-<div class="section-title">Recent Uploads</div>
+<div class="section-title">Recent Manual Uploads</div>
+<div class="section-subtitle">Historical imports and backup uploads</div>
 </div>
 <div class="card">
 <table>
 <thead>
 <tr>
-<th>File Name</th>
+<th class="sortable" onclick="sortTable('files','name')">File Name</th>
 <th>Type</th>
-<th>Date</th>
+<th>Source</th>
+<th class="sortable" onclick="sortTable('files','date')">Upload Date</th>
 <th>Status</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>stripe_settlements_apr2025.csv</strong></td>
+<td><strong>stripe_settlements_jan_apr_2025.csv</strong></td>
 <td>PSP Settlement</td>
-<td>2025-04-01</td>
-<td><span class="status-badge status-matched">Processed</span></td>
+<td>Historical Import</td>
+<td>2025-05-01</td>
+<td><span class="status-badge status-matched">Processed (482 transactions)</span></td>
 </tr>
 <tr>
-<td><strong>bank_statement_hsbc_apr.pdf</strong></td>
+<td><strong>citi_statement_Q1_2025.pdf</strong></td>
 <td>Bank Statement</td>
-<td>2025-04-01</td>
-<td><span class="status-badge status-matched">Processed</span></td>
+<td>Historical Import</td>
+<td>2025-05-01</td>
+<td><span class="status-badge status-matched">Processed (1,247 transactions)</span></td>
+</tr>
+<tr>
+<td><strong>klarna_settlements_apr2025.csv</strong></td>
+<td>PSP Settlement</td>
+<td>Backup (API down)</td>
+<td>2025-04-28</td>
+<td><span class="status-badge status-matched">Processed (156 transactions)</span></td>
+</tr>
+<tr>
+<td><strong>netsuite_revenue_export_Q1.xlsx</strong></td>
+<td>ERP Export</td>
+<td>Historical Import</td>
+<td>2025-05-01</td>
+<td><span class="status-badge status-matched">Processed (3,185 records)</span></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+
+<div class="card" style="margin-top:32px">
+<div class="section-title" style="margin-bottom:16px">Supported File Formats</div>
+<div class="grid grid-3">
+<div style="padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="font-weight:600;margin-bottom:8px">Bank Statements</div>
+<div style="font-size:13px;color:#999">CSV, PDF, MT940, CAMT.053</div>
+</div>
+<div style="padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="font-weight:600;margin-bottom:8px">PSP Settlements</div>
+<div style="font-size:13px;color:#999">CSV, XLSX (Stripe, Klarna, PayPal, Adyen formats)</div>
+</div>
+<div style="padding:16px;background:#0f0f0f;border-radius:8px">
+<div style="font-weight:600;margin-bottom:8px">ERP Exports</div>
+<div style="font-size:13px;color:#999">CSV, XLSX (NetSuite, Xero, QuickBooks)</div>
+</div>
+</div>
+</div>
 `;
 }
 
-else if(page==='settings'){
+function renderSettings(curr){
 document.getElementById('page-title').textContent='Settings';
 document.getElementById('page-subtitle').textContent='Configure auto-resolution rules & thresholds';
 document.getElementById('content').innerHTML=`
@@ -1573,17 +2046,199 @@ document.getElementById('content').innerHTML=`
 <div style="font-weight:600;margin-bottom:4px">Minimum Confidence Score</div>
 <div style="font-size:13px;color:#999">Matches below this require manual review</div>
 </div>
-<input type="text" value="85%" style="padding:8px 12px;background:#000;border:1px solid #333;border-radius:4px;color:#fff;width:120px" />
+<input type="text" value="85%" style="padding:8px 12px;background:#000;border:1px solid#333;border-radius:4px;color:#fff;width:120px" />
 </div>
 </div>
 <div style="margin-top:24px">
-<button class="btn btn-primary">Save Changes</button>
+<button class="btn btn-primary" onclick="saveSettings()">Save Changes</button>
 </div>
 </div>
 </div>
 </div>
 `;
 }
+
+// Interactive functions
+function sortTable(tableType,column){
+const tbodyIds={
+'exception':'exception-tbody',
+'psp':'psp-tbody',
+'review':'review-tbody',
+'history':'history-tbody',
+'threeway':'threeway-tbody',
+'cash':'cash-tbody',
+'files':'files-tbody'
+};
+const tbody=document.getElementById(tbodyIds[tableType]||'table-body');
+if(!tbody)return;
+const rows=Array.from(tbody.querySelectorAll('tr'));
+
+if(sortColumn===column){
+sortDirection=sortDirection==='asc'?'desc':'asc';
+}else{
+sortColumn=column;
+sortDirection='asc';
+}
+
+rows.sort((a,b)=>{
+let aVal,bVal;
+if(column==='amount'||column==='confidence'||column==='age'){
+aVal=parseFloat(a.dataset[column]||0);
+bVal=parseFloat(b.dataset[column]||0);
+}else{
+aVal=(a.dataset[column]||a.cells[0].textContent).toLowerCase();
+bVal=(b.dataset[column]||b.cells[0].textContent).toLowerCase();
+}
+if(sortDirection==='asc'){
+return aVal>bVal?1:-1;
+}else{
+return aVal<bVal?1:-1;
+}
+});
+
+tbody.innerHTML='';
+rows.forEach(row=>tbody.appendChild(row));
+
+// Update header arrows
+document.querySelectorAll('th').forEach(th=>{
+th.classList.remove('sort-asc','sort-desc');
+});
+const clickedHeader=Array.from(document.querySelectorAll('th')).find(th=>
+th.textContent.toLowerCase().includes(column.replace('-',' '))
+);
+if(clickedHeader){
+clickedHeader.classList.add(sortDirection==='asc'?'sort-asc':'sort-desc');
+}
+}
+
+function filterTable(term,tableId){
+searchTerm=term.toLowerCase();
+const tbody=document.getElementById(tableId||'table-body');
+if(!tbody)return;
+const rows=tbody.querySelectorAll('tr');
+rows.forEach(row=>{
+const text=row.textContent.toLowerCase();
+row.style.display=text.includes(searchTerm)?'':'none';
+});
+}
+
+function refreshFXRates(){
+const curr=currency[currentEntity];
+const refreshMsg=document.createElement('div');
+refreshMsg.style.cssText='position:fixed;top:20px;right:20px;background:#4ade80;color:#000;padding:12px 24px;border-radius:8px;font-weight:600;z-index:1000';
+refreshMsg.textContent='FX rates updated ✓';
+document.body.appendChild(refreshMsg);
+setTimeout(()=>refreshMsg.remove(),2000);
+}
+
+function filterResolutionHistory(){
+const filter=document.getElementById('resolution-filter').value;
+const tbody=document.getElementById('history-tbody');
+if(!tbody)return;
+const rows=tbody.querySelectorAll('tr');
+rows.forEach(row=>{
+const method=row.dataset.method;
+if(filter==='all'){
+row.style.display='';
+}else if(filter==='auto' && method==='auto'){
+row.style.display='';
+}else if(filter==='manual' && method==='manual'){
+row.style.display='';
+}else{
+row.style.display='none';
+}
+});
+}
+
+function editFXRates(){
+const curr=currency[currentEntity];
+const rates=fxRates[currentEntity];
+const pairs=Object.keys(rates);
+const modalContent=`
+<div class="modal-header">Edit Monthly FX Rates</div>
+<div style="background:#1a1a1a;border-radius:8px;padding:20px;margin-bottom:24px">
+<div style="font-size:14px;color:#999;margin-bottom:16px">
+Set corporate monthly rates for reconciliation variance calculations.
+These rates will be used for the current month: ${new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'})}.
+</div>
+<div style="background:#0f0f0f;border-radius:6px;padding:12px;font-size:13px;color:#facc15">
+⚠️ <strong>Permission Required:</strong> Only Finance Managers and Treasury Analysts can update FX rates.
+</div>
+</div>
+
+<div style="display:grid;gap:16px;margin:24px 0">
+${pairs.map(pair=>`
+<div style="display:flex;justify-content:space-between;align-items:center;padding:16px;background:#0f0f0f;border-radius:8px">
+<div>
+<div style="font-weight:600;margin-bottom:4px">${pair}</div>
+<div style="font-size:13px;color:#999">Current: ${rates[pair].rate.toFixed(4)}</div>
+</div>
+<input type="number" step="0.0001" value="${rates[pair].rate.toFixed(4)}" 
+style="padding:8px 12px;background:#000;border:1px solid #333;border-radius:4px;color:#fff;width:120px;text-align:right"
+id="rate-${pair.replace('/','')}" />
+</div>
+`).join('')}
+</div>
+
+<div style="background:#0f0f0f;border-radius:8px;padding:16px;margin:24px 0">
+<div style="font-weight:600;margin-bottom:8px">Audit Trail</div>
+<div style="font-size:13px;color:#999">
+Last updated: ${new Date(Date.now()-5*24*60*60*1000).toLocaleDateString('en-GB')} by Alex Morgan<br>
+Previous update: ${new Date(Date.now()-35*24*60*60*1000).toLocaleDateString('en-GB')} by Sarah Chen
+</div>
+</div>
+
+<div style="display:flex;gap:12px;margin-top:24px">
+<button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+<button class="btn btn-primary" onclick="saveFXRates()">Save Rates</button>
+</div>
+`;
+document.getElementById('modal-content').innerHTML=modalContent;
+document.getElementById('resolution-modal').classList.add('active');
+}
+
+function saveFXRates(){
+alert(`FX Rates Updated ✓
+
+New monthly rates saved for ${new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'})}.
+
+All reconciliation variance calculations will use these rates.
+
+Audit trail updated: ${new Date().toLocaleString('en-GB')} by Alex Morgan`);
+closeModal();
+showPage('dashboard');
+}
+
+function filterByAging(range){
+showPage('exception-queue');
+}
+
+function approve(txId){
+alert(`Transaction ${txId} approved ✓`);
+}
+
+function approveAll(){
+if(confirm('Approve all 12 items in review queue?')){
+alert('All items approved ✓\n\nConfidence scores updated for future matching.');
+showPage('dashboard');
+}
+}
+
+function saveSettings(){
+alert('Settings saved ✓\n\nAuto-resolution thresholds updated.');
+}
+
+function exportData(){
+alert('Export functionality:\n\n• CSV export of current view\n• Excel with formatted sheets\n• PDF report generation\n\nComing soon in production version.');
+}
+
+function handleFileUpload(event){
+const files=Array.from(event.target.files);
+alert(`Files uploaded:\n\n${files.map(f=>f.name).join('\n')}\n\nProcessing started...`);
+}
+
+function showAddConnection(){
+alert('Add New Connection\n\nAvailable integrations:\n\n• Xero (Accounting)\n• QuickBooks (Accounting)\n• HSBC (Bank via Open Banking)\n• Barclays (Bank via Open Banking)\n• Sage (Accounting)\n• More coming soon\n\nSelect a system to begin OAuth authorization flow.');
 }
 
 function showResolutionDetail(txId){
@@ -1594,7 +2249,7 @@ document.getElementById('modal-content').innerHTML=`
 <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
 <div style="font-size:32px">✅</div>
 <div>
-<div style="font-size:20px;font-weight:600">Auto-Resolved on 2025-04-01 14:23:15</div>
+<div style="font-size:20px;font-weight:600">Auto-Resolved on ${new Date().toLocaleDateString('en-GB')}</div>
 <div style="font-size:14px;color:#999">Confidence Score: <span class="confidence-high" style="font-weight:600">99.2%</span></div>
 </div>
 </div>
@@ -1609,7 +2264,7 @@ document.getElementById('modal-content').innerHTML=`
 </div>
 <div class="detail-row">
 <span class="detail-label">Date</span>
-<span class="detail-value">2025-03-30</span>
+<span class="detail-value">${new Date(Date.now()-2*24*60*60*1000).toLocaleDateString('en-GB')}</span>
 </div>
 <div class="detail-row">
 <span class="detail-label">Reference</span>
@@ -1629,7 +2284,7 @@ document.getElementById('modal-content').innerHTML=`
 </div>
 <div class="detail-row">
 <span class="detail-label">Date</span>
-<span class="detail-value" style="color:#4ade80">2025-04-01 ✓ T+2</span>
+<span class="detail-value" style="color:#4ade80">${new Date().toLocaleDateString('en-GB')} ✓ T+2</span>
 </div>
 <div class="detail-row">
 <span class="detail-label">Reference</span>
@@ -1678,31 +2333,31 @@ document.getElementById('modal-content').innerHTML=`
 <div class="audit-trail">
 <div style="font-weight:600;margin-bottom:16px;color:#999">AUDIT TRAIL</div>
 <div class="audit-item">
-<div class="audit-time">2025-03-30 09:15</div>
+<div class="audit-time">${new Date(Date.now()-2*24*60*60*1000).toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
 <div class="audit-event">PSP record received</div>
 </div>
 <div class="audit-item">
-<div class="audit-time">2025-04-01 08:30</div>
+<div class="audit-time">${new Date().toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
 <div class="audit-event">Bank record received</div>
 </div>
 <div class="audit-item">
-<div class="audit-time">2025-04-01 14:23</div>
+<div class="audit-time">${new Date().toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
 <div class="audit-event">Auto-match executed</div>
 </div>
 <div class="audit-item">
-<div class="audit-time">2025-04-01 14:23</div>
+<div class="audit-time">${new Date().toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
 <div class="audit-event">Confidence score calculated: 99.2%</div>
 </div>
 <div class="audit-item">
-<div class="audit-time">2025-04-01 14:23</div>
+<div class="audit-time">${new Date().toLocaleString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
 <div class="audit-event" style="color:#4ade80;font-weight:600">Auto-resolved (Tier 1 - Silent)</div>
 </div>
 </div>
 
 <div style="display:flex;gap:12px;margin-top:24px">
 <button class="btn btn-secondary" onclick="closeModal()">Close</button>
-<button class="btn btn-secondary">Override & Unmatch</button>
-<button class="btn btn-primary">Export PDF</button>
+<button class="btn btn-secondary" onclick="alert('Override functionality:\n\nUnmatch this transaction and flag for manual review.\n\nAudit trail updated automatically.')">Override & Unmatch</button>
+<button class="btn btn-primary" onclick="alert('PDF export functionality coming soon')">Export PDF</button>
 </div>
 `;
 document.getElementById('resolution-modal').classList.add('active');
@@ -1711,9 +2366,6 @@ document.getElementById('resolution-modal').classList.add('active');
 function closeModal(){
 document.getElementById('resolution-modal').classList.remove('active');
 }
-
-// Initialize
-showPage('dashboard');
 </script>
 </body>
 </html>
